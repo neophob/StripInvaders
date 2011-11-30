@@ -27,7 +27,7 @@ static uint8_t DELAY = 34;
 //*************************/
 // Network settings
 byte myMac[] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
-byte myIp[]  = { 192, 168, 0, 177 };
+byte myIp[]  = { 192, 168, 111, 222 };
 int  serverPort  = 10000;
 
 //*************************/
@@ -121,6 +121,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 //*************************/
 // Helper Functions
 
+//TODO: verify parameter Passing by value
 void setTintPixelColor(uint16_t i, uint32_t c) {
   uint16_t b = c & 0xff;
   c >>= 8;
@@ -132,9 +133,9 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
     //no tint effect, no calculations needed
   } else {
     //apply tint effect
-    r = r*oscR >> 8;
-    g = g*oscG >> 8;
-    b = b*oscB >> 8;
+    r = r*(oscR+1) >> 8;
+    g = g*(oscG+1) >> 8;
+    b = b*(oscB+1) >> 8;
   }
   
   uint32_t tintCol = r & 255;
