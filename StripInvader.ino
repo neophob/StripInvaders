@@ -55,6 +55,11 @@ void setup(){
  server.addCallback(OSC_MSG_SET_B, &oscCallbackB);
  server.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); 
 
+ //init
+ oscR = 255;
+ oscG = 255;
+ oscB = 255;
+ 
   //ws2801 start strips 
  strip.begin();
 
@@ -120,9 +125,14 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
   c >>= 8;
   uint16_t r = c & 0xff;
 
-  r = r*oscR >> 8;
-  g = g*oscG >> 8;
-  b = b*oscB >> 8;
+  if (oscR = 255 && oscG == 255 && oscB == 255) {
+    //no tint effect, no calculations needed
+  } else {
+    //apply tint effect
+    r = r*oscR >> 8;
+    g = g*oscG >> 8;
+    b = b*oscB >> 8;
+  }
   
   uint32_t tintCol = r & 255;
   tintCol <<= 8;
