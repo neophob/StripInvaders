@@ -1,6 +1,5 @@
-//StripInvader, (c) 2011 Michael Vogt // pixelinvaders.ch
+//StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
 //
-// TODO: Tint effect
 
 #include <SPI.h>
 #include <Ethernet.h>
@@ -112,7 +111,25 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           setupStars();    
           break;
   }  
+}
 
+void setTintPixelColor(uint16_t i, uint32_t c) {
+  uint16_t b = c & 0xff;
+  c >>= 8;
+  uint16_t g = c & 0xff;
+  c >>= 8;
+  uint16_t r = c & 0xff;
+
+  r = r*oscR >> 8;
+  g = g*oscG >> 8;
+  b = b*oscB >> 8;
+  
+  uint32_t tintCol = r & 255;
+  tintCol <<= 8;
+  tintCol |= g & 255;
+  tintCol <<= 8;
+  tintCol |= b & 255;
+  strip.setPixelColor(i, tintCol);
 }
 
 

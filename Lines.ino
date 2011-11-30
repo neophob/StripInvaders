@@ -1,3 +1,7 @@
+//StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
+//
+//Fancy lines effects
+
 struct line {
   uint8_t ofs;
   uint8_t pos;
@@ -33,9 +37,11 @@ void loopLines() {
     
   for (int i=0; i < strip.numPixels(); i++) {
     if (i>=lines.ofs+lines.del && i<lines.ofs+lines.pos) {
-      strip.setPixelColor(i, lines.col);
+      //strip.setPixelColor(i, lines.col);
+      setTintPixelColor(i, lines.col);
     } else {
-      strip.setPixelColor(i, clearCol);
+      //strip.setPixelColor(i, clearCol);
+      setTintPixelColor(i, clearCol);
     }      
   }
   
@@ -81,7 +87,8 @@ void fadeToNewColor() {
     uint32_t c = Color(rr, gg, bb);
     
     for (int i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, c);
+      //strip.setPixelColor(i, c);
+      setTintPixelColor(i, c);
     }
     strip.show(); 
     delay(DELAY);

@@ -1,3 +1,6 @@
+//StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
+//
+//some leds are fading in, others are fading out...
 
 //just a constant for the random selection
 #define RND 255
@@ -91,7 +94,8 @@ void loopStars() {
     }
     
     //update color
-    strip.setPixelColor(i, stars[i].currentCol);
+    //strip.setPixelColor(i, stars[i].currentCol);
+    setTintPixelColor(i, stars[i].currentCol);
   }
   
   strip.show(); 
