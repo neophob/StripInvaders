@@ -84,7 +84,8 @@ void loop(){
 //  digitalWrite(ledPin, LOW);
 }
 
-
+//*************************/
+// OSC callback
 void oscCallbackR(OSCMessage *_mes){
   //get 1st argument(int32)
   oscR = _mes->getArgInt32(0) & 255;
@@ -99,7 +100,6 @@ void oscCallbackB(OSCMessage *_mes){
   //get 1st argument(int32)
   oscB = _mes->getArgInt32(0) & 255;
 }
-
 
 void oscCallbackChangeMode(OSCMessage *_mes){
   if (mode<MAX_NR_OF_MODES) {
@@ -117,6 +117,9 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           break;
   }  
 }
+
+//*************************/
+// Helper Functions
 
 void setTintPixelColor(uint16_t i, uint32_t c) {
   uint16_t b = c & 0xff;
@@ -143,3 +146,13 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
 }
 
 
+// Create a 24 bit color value from R,G,B
+uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
+  uint32_t c;
+  c = r;
+  c <<= 8;
+  c |= g;
+  c <<= 8;
+  c |= b;
+  return c;
+}
