@@ -8,11 +8,11 @@
 
 //*************************/
 // OSC Stuff
-#define OSC_MSG_SET_R "/stripinv/r"
-#define OSC_MSG_SET_G "/stripinv/g"
-#define OSC_MSG_SET_B "/stripinv/b"
+#define OSC_MSG_SET_R "/knbr"
+#define OSC_MSG_SET_G "/knbg"
+#define OSC_MSG_SET_B "/knbb"
 
-#define OSC_MSG_CHANGE_MODE "/stripinv/mode"
+#define OSC_MSG_CHANGE_MODE "/mode"
 
 //*************************/
 // WS2801
