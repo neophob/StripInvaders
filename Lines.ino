@@ -19,7 +19,7 @@ uint32_t clearCol;
 
 
 void setupLines() {
-  fadeToNewColor();
+  fadeToNewColor(false);
   newAnimation(); 
 }
 
@@ -52,7 +52,7 @@ void loopLines() {
 
 //init a new line animation
 void newAnimation() {
-  fadeToNewColor();
+  fadeToNewColor(true);
   
   lines.length = 0;
   while (lines.length<16) {
@@ -65,7 +65,7 @@ void newAnimation() {
 }
 
 //fade currentbackground color to next, random color
-void fadeToNewColor() {
+void fadeToNewColor(boolean sleep) {
   uint8_t oldR = clearColR;
   uint8_t oldG = clearColG;
   uint8_t oldB = clearColB;
@@ -90,8 +90,11 @@ void fadeToNewColor() {
       //strip.setPixelColor(i, c);
       setTintPixelColor(i, c);
     }
-    strip.show(); 
-    delay(DELAY);
+    
+    if (sleep) {
+      strip.show(); 
+      delay(DELAY);      
+    }
   }
   
 }

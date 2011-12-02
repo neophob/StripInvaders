@@ -8,7 +8,6 @@
 
 //*************************/
 // OSC Stuff
-#define OSC_MSG_SET_R "/knbr"
 #define OSC_MSG_SET_G "/knbg"
 #define OSC_MSG_SET_B "/knbb"
 
@@ -45,14 +44,11 @@ OSCServer server;
  *  SETUP
  */
 void setup(){ 
- mode=0;
- Serial.begin(19200);
- 
  Ethernet.begin(myMac ,myIp); 
  server.begin(serverPort);
  
  //set callback function
- server.addCallback(OSC_MSG_SET_R, &oscCallbackR); //PARAMETER: 1, float value 0..1
+ server.addCallback("/knbr", &oscCallbackR); //PARAMETER: 1, float value 0..1
  server.addCallback(OSC_MSG_SET_G, &oscCallbackG); //PARAMETER: 1, float value 0..1
  server.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
  server.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
@@ -61,10 +57,8 @@ void setup(){
  oscR = 255;
  oscG = 255;
  oscB = 255;
- 
-  //ws2801 start strips 
- strip.begin();
-
+ mode=0;
+  
  setupLines();
  pinMode(ledPin, OUTPUT);  
  
@@ -74,6 +68,9 @@ void setup(){
  synchronousBlink();
  delay(50);
  synchronousBlink();
+
+ //ws2801 start strips 
+ strip.begin();
  
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
@@ -85,6 +82,10 @@ void setup(){
  *  LOOP
  */  
 void loop(){
+  if(server.aviableCheck()>0){
+     //Serial.println("alive! "); 
+  }
+
 /*  switch (mode) {
     case 0:
           loopLines();
@@ -111,47 +112,53 @@ void synchronousBlink() {
 
 //*************************/
 // OSC callback
-void oscCallbackR(OSCMessage *_mes){
-    Serial.println("AAA");
-    
+void oscCallbackR(OSCMessage *_mes){    
   oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("R: ");
-  Serial.println(oscR);
+  Serial.println(oscR, DEC);
 #endif 
 }
 
 void oscCallbackG(OSCMessage *_mes){
-    Serial.println("vVVVV");
   oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("G: ");
-  Serial.println(oscG);
+  Serial.println(oscG, DEC);
 #endif
 }
 
 void oscCallbackB(OSCMessage *_mes){
-      Serial.println("VVVVVVB");
   oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("B: ");
-  Serial.println(oscB);
+  Serial.println(oscB, DEC);
 #endif  
 }
 
+// change mode
 void oscCallbackChangeMode(OSCMessage *_mes){
-      Serial.println("AAAS");
-  if (mode<MAX_NR_OF_MODES) {
+  int arg=_mes->getArgInt32(0);
+//  if (arg != 1) {
+//    return;
+//  }
+  
+  if (mode<MAX_NR_OF_MODES-1) {
     mode++;
   } else {
     mode = 0; 
   }
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("Setup start: ");
+  Serial.println(arg);
+#endif  
   
   switch (mode) {
     case 0:
