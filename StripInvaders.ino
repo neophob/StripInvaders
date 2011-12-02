@@ -39,6 +39,8 @@ int ledPin =  9;
 uint8_t oscR, oscG, oscB, mode;
 OSCServer server;
 
+#define USE_SERIAL_DEBUG 1
+
 /**
  *  SETUP
  */
@@ -72,20 +74,26 @@ void setup(){
  synchronousBlink();
  delay(50);
  synchronousBlink();
+ 
+#ifdef USE_SERIAL_DEBUG
+  Serial.begin(115200);
+  Serial.println("Hello World!");
+#endif
 }
 
 /**
  *  LOOP
  */  
 void loop(){
-  switch (mode) {
+/*  switch (mode) {
     case 0:
           loopLines();
           break;
     case 1:
           loopStars();    
           break;
-  }  
+  }
+*/  
 }
 
 //convert a float value to a byte value
@@ -104,21 +112,41 @@ void synchronousBlink() {
 //*************************/
 // OSC callback
 void oscCallbackR(OSCMessage *_mes){
+    Serial.println("AAA");
+    
   oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();
+  
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("R: ");
+  Serial.println(oscR);
+#endif 
 }
 
 void oscCallbackG(OSCMessage *_mes){
+    Serial.println("vVVVV");
   oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("G: ");
+  Serial.println(oscG);
+#endif
 }
 
 void oscCallbackB(OSCMessage *_mes){
+      Serial.println("VVVVVVB");
   oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
+  
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("B: ");
+  Serial.println(oscB);
+#endif  
 }
 
 void oscCallbackChangeMode(OSCMessage *_mes){
+      Serial.println("AAAS");
   if (mode<MAX_NR_OF_MODES) {
     mode++;
   } else {
@@ -135,6 +163,12 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   }  
 
   synchronousBlink();
+  
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("mode: ");
+  Serial.println(mode);
+#endif  
+  
 }
 
 //*************************/
