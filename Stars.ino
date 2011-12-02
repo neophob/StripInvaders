@@ -20,7 +20,8 @@ void setupStars() {
       initStar(i);
     } else {
       stars[i].pos = 0;
-    }      
+    }
+    strip.setPixelColor(i, 0);  
   }
 }
 
@@ -66,6 +67,7 @@ void loopStars() {
       if (stars[i].col < 2) {
         //restart
         stars[i].pos = 0;
+        strip.setPixelColor(i, 0);  
       }
     }
     

@@ -8,9 +8,9 @@
 
 //*************************/
 // OSC Stuff
-#define OSC_MSG_SET_R "/knbr"
+#define OSC_MSG_SET_R "/knbb" //simple method to fix the fancy strip color order
 #define OSC_MSG_SET_G "/knbg"
-#define OSC_MSG_SET_B "/knbb"
+#define OSC_MSG_SET_B "/knbr"
 #define OSC_MSG_CHANGE_MODE "/mode"
 
 #define OSC_WORKARROUND_TIME 3
@@ -216,22 +216,16 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
   c >>= 8;
   uint16_t r = c & 0xff;
 
-  if (oscR = 255 && oscG == 255 && oscB == 255) {
+  if (oscR == 255 && oscG == 255 && oscB == 255) {
     //no tint effect, no calculations needed
   } else {
     //apply tint effect and SWAP color according to real cabeling
-    uint16_t rr=r;
-    r = b*(oscR+1) >> 8;
+    r = r*(oscR+1) >> 8;
     g = g*(oscG+1) >> 8;
-    b = rr*(oscB+1) >> 8;
+    b = b*(oscB+1) >> 8;
   }
   
-  uint32_t tintCol = r & 255;
-  tintCol <<= 8;
-  tintCol |= g & 255;
-  tintCol <<= 8;
-  tintCol |= b & 255;
-  strip.setPixelColor(i, tintCol);
+  strip.setPixelColor(i, r, g, b);
 }
 
 
