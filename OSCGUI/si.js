@@ -4,7 +4,7 @@ StripInvader OSC Interface using Control (http://charlie-roberts.com/Control/)
 (c) by michael Vogt/neophob.com 2011
  */
 
-loadedInterfaceName = "stripInvader";
+loadedInterfaceName = "stripInvaderBeta";
 interfaceOrientation = "portrait";
 
 
