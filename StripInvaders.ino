@@ -50,10 +50,10 @@ void setup(){
  server.begin(serverPort);
  
  //set callback function
- server.addCallback(OSC_MSG_SET_R, &oscCallbackR);
- server.addCallback(OSC_MSG_SET_G, &oscCallbackG);
- server.addCallback(OSC_MSG_SET_B, &oscCallbackB);
- server.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); 
+ server.addCallback(OSC_MSG_SET_R, &oscCallbackR); //PARAMETER: 1, float value 0..1
+ server.addCallback(OSC_MSG_SET_G, &oscCallbackG); //PARAMETER: 1, float value 0..1
+ server.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
+ server.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
 
  //init
  oscR = 255;
@@ -65,6 +65,13 @@ void setup(){
 
  setupLines();
  pinMode(ledPin, OUTPUT);  
+ 
+ //we-are-ready-indicator
+ synchronousBlink();
+ delay(50);
+ synchronousBlink();
+ delay(50);
+ synchronousBlink();
 }
 
 /**
@@ -79,26 +86,36 @@ void loop(){
           loopStars();    
           break;
   }  
-//  digitalWrite(ledPin, HIGH);
-//  delay(50);
-//  digitalWrite(ledPin, LOW);
+}
+
+//convert a float value to a byte value
+uint8_t getRgbValueFromFloat(float f) {
+  f *= 255.0f;
+  return byte(f);
+}
+
+//just blink
+void synchronousBlink() {
+  digitalWrite(ledPin, HIGH);
+  delay(50);
+  digitalWrite(ledPin, LOW);  
 }
 
 //*************************/
 // OSC callback
 void oscCallbackR(OSCMessage *_mes){
-  //get 1st argument(int32)
-  oscR = _mes->getArgInt32(0) & 255;
+  oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  synchronousBlink();
 }
 
 void oscCallbackG(OSCMessage *_mes){
-  //get 1st argument(int32)
-  oscG = _mes->getArgInt32(0) & 255;
+  oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  synchronousBlink();  
 }
 
 void oscCallbackB(OSCMessage *_mes){
-  //get 1st argument(int32)
-  oscB = _mes->getArgInt32(0) & 255;
+  oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  synchronousBlink();  
 }
 
 void oscCallbackChangeMode(OSCMessage *_mes){
@@ -116,6 +133,8 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           setupStars();    
           break;
   }  
+
+  synchronousBlink();
 }
 
 //*************************/
@@ -132,10 +151,11 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
   if (oscR = 255 && oscG == 255 && oscB == 255) {
     //no tint effect, no calculations needed
   } else {
-    //apply tint effect
-    r = r*(oscR+1) >> 8;
+    //apply tint effect and SWAP color according to real cabeling
+    uint16_t rr=r;
+    r = b*(oscR+1) >> 8;
     g = g*(oscG+1) >> 8;
-    b = b*(oscB+1) >> 8;
+    b = rr*(oscB+1) >> 8;
   }
   
   uint32_t tintCol = r & 255;
