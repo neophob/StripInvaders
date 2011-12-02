@@ -34,7 +34,7 @@ int oscCallBackWorkarround;
 
 //*************************/
 // Misc
-#define MAX_NR_OF_MODES 2
+#define MAX_NR_OF_MODES 3
 
 WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 int ledPin =  9;
@@ -100,6 +100,9 @@ void loop(){
           break;
     case 1:
           loopStars();    
+          break;
+    case 2:
+          loopSolid();    
           break;
   }
   
@@ -193,6 +196,9 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           break;
     case 1:
           setupStars();    
+          break;
+    case 2:
+          setupSolid();    
           break;
   }  
 
