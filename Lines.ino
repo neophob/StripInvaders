@@ -64,6 +64,7 @@ void newAnimation(boolean sleep) {
   lines.col = Color(random(200), random(200), random(250));  
 }
 
+
 //fade currentbackground color to next, random color
 void fadeToNewColor(boolean sleep) {
   uint8_t oldR = clearColR;

@@ -1,5 +1,5 @@
 //StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
-//
+//TODO: add bonjour http://gkaindl.com/software/arduino-ethernet/bonjour
 
 #include <SPI.h>
 #include <Ethernet.h>
@@ -17,17 +17,18 @@
 //*************************/
 // WS2801
 //how many pixels
-#define NR_OF_PIXELS 64
+#define NR_OF_PIXELS 160
+
 //output pixels
 int dataPin = 2;       
 int clockPin = 3;  
 
-static uint8_t DELAY = 34;
+static uint8_t DELAY = 20;
 
 //*************************/
 // Network settings
-byte myMac[] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
-byte myIp[]  = { 192, 168, 111, 222 };
+byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
+byte myIp[4]  = { 192, 168, 111, 222 };
 int  serverPort  = 10000;
 
 //*************************/
@@ -85,7 +86,6 @@ void setup(){
 void loop(){
   if (oscServer.aviableCheck()>0){
      //Serial.println("alive! "); 
-
   }
 
   switch (mode) {
@@ -108,7 +108,7 @@ uint8_t getRgbValueFromFloat(float f) {
 //just blink
 void synchronousBlink() {
   digitalWrite(ledPin, HIGH);
-  delay(50);
+  delay(20);
   digitalWrite(ledPin, LOW);  
 }
 
@@ -120,7 +120,6 @@ void oscCallbackR(OSCMessage *_mes){
   oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();
 
-  
 #ifdef USE_SERIAL_DEBUG
   Serial.print("R: ");
   Serial.println(oscR, DEC);
