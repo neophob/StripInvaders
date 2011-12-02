@@ -19,14 +19,14 @@ uint32_t clearCol;
 
 
 void setupLines() {
-  fadeToNewColor(false);
-  newAnimation(); 
+  //fadeToNewColor(false);
+  newAnimation(false); 
 }
 
 
 void loopLines() {
   if ((lines.pos > 0 && lines.pos == lines.del) || lines.pos > strip.numPixels()) {
-    newAnimation();
+    newAnimation(true);
   }
   
   if (lines.pos > lines.length) {
@@ -51,8 +51,8 @@ void loopLines() {
 
 
 //init a new line animation
-void newAnimation() {
-  fadeToNewColor(true);
+void newAnimation(boolean sleep) {
+  fadeToNewColor(sleep);
   
   lines.length = 0;
   while (lines.length<16) {
