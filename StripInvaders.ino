@@ -66,7 +66,7 @@ void setup(){
  setupLines();
  pinMode(ledPin, OUTPUT);  
  
- //we-are-ready-indicator
+ //we-are-ready indicator
  synchronousBlink();
  delay(50);
  synchronousBlink();

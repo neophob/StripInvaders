@@ -13,15 +13,19 @@ pages = [
 /********** PAGE 1 *************/
 [
 
-/* RGB Knobs */
+/* RGB slider */
 {
     "name":"knbr",
-    "type":"Knob",
-    "x":.0, "y":0,
-    "radius":.3,
+    "type":"Slider",
+    "x":0.0, "y":0,
+    "width":.2, "height":.45,
+    "stroke": "#550000",
     "color": "#ff0000",
-    "stroke": "#880000",
+    "min": 0.0, "max": 1.0,
+    "isXFader" : false,
+    "isVertical" : true,
 },
+
 {
     "name":"knbg",
     "type":"Knob",
@@ -43,7 +47,7 @@ pages = [
 {
      "name": "mode",
      "type": "Button",
-     "x":.2, "y":.66,
+     "x":.2, "y":.55,
      "width":.6, "height":.2,
      "mode": "momentary",
      "color": "#fc8000",
@@ -51,6 +55,20 @@ pages = [
      "label": "MODE",
      "labelSize": "18",
 	 "oninit": "fireRandomPresentButton.fillDiv.style.borderWidth = '2px';",    
+},
+
+/* -- Refresh GUI Button */
+{
+     "name": "refreshButton",
+     "type": "Button",
+     "x": 0.0, "y": .8,
+     "width": .15, "height": .15,
+     "mode": "contact",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "ontouchstart": "interfaceManager.refreshInterface()",
+     "label": "Refresh GUI",
+     "labelSize": "18",
 },
 
 ],
