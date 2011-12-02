@@ -58,7 +58,7 @@ void loopStars() {
     // ========
     if (stars[i].pos == 2) {
       //decrease color...
-      if (stars[i].col>2) {
+      if (stars[i].col>=2) {
         stars[i].col-=2; 
       }
 
