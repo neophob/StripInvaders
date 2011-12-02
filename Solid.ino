@@ -10,6 +10,7 @@ void loopSolid() {
       setTintPixelColor(i, 0xffffff);
   }
   strip.show(); 
-
+  delay(DELAY);  
+  
 }
 

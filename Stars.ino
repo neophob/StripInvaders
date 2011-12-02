@@ -69,12 +69,13 @@ void loopStars() {
         stars[i].pos = 0;
         strip.setPixelColor(i, 0);  
       }
-    }
-    
+    }    
   }
   
   strip.show(); 
   delay(DELAY);  
+
+  
 }
 
 
