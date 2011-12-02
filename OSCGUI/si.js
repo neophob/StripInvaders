@@ -66,7 +66,7 @@ pages = [
      "name": "refreshButton",
      "type": "Button",
      "x": 0.0, "y": .8,
-     "width": .15, "height": .15,
+     "width": .25, "height": .15,
      "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
@@ -74,7 +74,20 @@ pages = [
      "label": "Refresh GUI",
      "labelSize": "18",
 },
-
+/* -- Button for enabling Menu/Toolbar */
+{
+    "name": "tabButton",
+    "type": "Button",
+    "x": 0.3, "y": .8,
+    "width": .25, "height": .15,
+    "mode": "toggle",
+    "color": "#fc8000",
+    "stroke": "#7e4000",
+    "isLocal": true,
+    "ontouchstart": "if(this.value == this.max) { control.showToolbar(); } else { control.hideToolbar(); }",
+    "label": "Menu",
+    "labelSize": "18",
+},
 ],
 
 ];
