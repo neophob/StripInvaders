@@ -11,9 +11,9 @@
 #define OSC_MSG_SET_R "/knbr"
 #define OSC_MSG_SET_G "/knbg"
 #define OSC_MSG_SET_B "/knbb"
-
 #define OSC_MSG_CHANGE_MODE "/mode"
 
+#define OSC_WORKARROUND_TIME 3
 //*************************/
 // WS2801
 //how many pixels
@@ -29,7 +29,8 @@ static uint8_t DELAY = 20;
 // Network settings
 byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
 byte myIp[4]  = { 192, 168, 111, 222 };
-int  serverPort  = 10000;
+int serverPort  = 10000;
+int oscCallBackWorkarround;
 
 //*************************/
 // Misc
@@ -60,7 +61,8 @@ void setup(){
  oscG = 255;
  oscB = 255;
  mode=0;
-  
+ oscCallBackWorkarround = 0;
+ 
  setupLines();
  pinMode(ledPin, OUTPUT);  
  
@@ -87,7 +89,11 @@ void loop(){
   if (oscServer.aviableCheck()>0){
      //Serial.println("alive! "); 
   }
-
+  
+  if (oscCallBackWorkarround>0) {
+    oscCallBackWorkarround--;
+  }
+  
   switch (mode) {
     case 0:
           loopLines();
@@ -116,7 +122,11 @@ void synchronousBlink() {
 // OSC callback
 
 // R
-void oscCallbackR(OSCMessage *_mes){    
+void oscCallbackR(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
   oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();
 
@@ -128,6 +138,10 @@ void oscCallbackR(OSCMessage *_mes){
 
 // G
 void oscCallbackG(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME; 
+  
   oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
 
@@ -139,6 +153,10 @@ void oscCallbackG(OSCMessage *_mes){
 
 // B
 void oscCallbackB(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+
   oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
   synchronousBlink();  
   
@@ -150,6 +168,10 @@ void oscCallbackB(OSCMessage *_mes){
 
 // change mode
 void oscCallbackChangeMode(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
   int arg=_mes->getArgInt32(0);
   if (arg != 1) {
     return;
