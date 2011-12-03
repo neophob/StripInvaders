@@ -11,9 +11,10 @@
 #define OSC_MSG_SET_R "/knbb" //simple method to fix the fancy strip color order
 #define OSC_MSG_SET_G "/knbg"
 #define OSC_MSG_SET_B "/knbr"
+#define OSC_MSG_SET_DELAY "/delay"
 #define OSC_MSG_CHANGE_MODE "/mode"
 
-#define OSC_WORKARROUND_TIME 3
+#define OSC_WORKARROUND_TIME 2
 //*************************/
 // WS2801
 //how many pixels
@@ -23,7 +24,7 @@
 int dataPin = 2;       
 int clockPin = 3;  
 
-static uint8_t DELAY = 20;
+uint8_t DELAY = 20;
 
 //*************************/
 // Network settings
@@ -54,6 +55,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_SET_R, &oscCallbackR); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_SET_G, &oscCallbackG); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
+ oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
 
  //init
@@ -129,6 +131,20 @@ void synchronousBlink() {
 
 //*************************/
 // OSC callback
+
+void oscCallbackDelay(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
+  DELAY = byte( _mes->getArgFloat(0)*100.0f );
+  synchronousBlink();
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("Delay: ");
+  Serial.println(DELAY, DEC);
+#endif 
+}
 
 // R
 void oscCallbackR(OSCMessage *_mes){
