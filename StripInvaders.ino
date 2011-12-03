@@ -34,7 +34,7 @@ int oscCallBackWorkarround;
 
 //*************************/
 // Misc
-#define MAX_NR_OF_MODES 4
+#define MAX_NR_OF_MODES 5
 
 WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 int ledPin =  9;
@@ -106,6 +106,9 @@ void loop(){
           break;
     case 3:
           loopKnightRider();    
+          break;
+    case 4:
+          loopRainbow();    
           break;
   }
   
@@ -205,6 +208,9 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           break;
     case 3:
           setupKnightRider();    
+          break;
+    case 4:
+          setupRainbow();    
           break;
   }  
 
