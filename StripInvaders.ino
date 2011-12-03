@@ -5,6 +5,7 @@
 #include <Ethernet.h>
 #include <ArdOSC.h>
 #include "WS2801.h"
+#include <EthernetBonjour.h>
 
 //*************************/
 // OSC Stuff
@@ -78,6 +79,30 @@ void setup(){
  //ws2801 start strips 
  strip.begin();
  
+  // Initialize the Bonjour/MDNS library. You can now reach or ping this
+  // Arduino via the host name "arduino.local", provided that your operating
+  // system is Bonjour-enabled (such as MacOS X).
+  // Always call this before any other method!
+  EthernetBonjour.begin("StripController");
+  
+  // Now let's register the service we're offering (a web service) via Bonjour!
+  // To do so, we call the addServiceRecord() method. The first argument is the
+  // name of our service instance and its type, separated by a dot. In this
+  // case, the service type is _http. There are many other service types, use
+  // google to look up some common ones, but you can also invent your own
+  // service type, like _mycoolservice - As long as your clients know what to
+  // look for, you're good to go.
+  // The second argument is the port on which the service is running. This is
+  // port 80 here, the standard HTTP port.
+  // The last argument is the protocol type of the service, either TCP or UDP.
+  // Of course, our service is a TCP service.
+  // With the service registered, it will show up in a Bonjour-enabled web
+  // browser. As an example, if you are using Apple's Safari, you will now see
+  // the service under Bookmarks -> Bonjour (Provided that you have enabled
+  // Bonjour in the "Bookmarks" preferences in Safari).
+  EthernetBonjour.addServiceRecord("StripController._http",
+                                   10000,
+                                   MDNSServiceTCP);
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
   Serial.println("Hello World!");
@@ -87,7 +112,11 @@ void setup(){
 /**
  *  LOOP
  */  
-void loop(){
+void loop(){  
+  // This actually runs the Bonjour module. YOU HAVE TO CALL THIS PERIODICALLY,
+  // OR NOTHING WILL WORK! Preferably, call it once per loop().
+  EthernetBonjour.run();
+  
   if (oscServer.aviableCheck()>0){
      //Serial.println("alive! "); 
   }
