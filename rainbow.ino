@@ -19,7 +19,7 @@ void loopRainbow() {
       setTintPixelColor(i, Wheel( ((i * 256 / strip.numPixels()) + j) % 256) );
     }  
 //  }
-  j+=4;
+  j++;
   strip.show(); 
   delay(DELAY);  
 }
