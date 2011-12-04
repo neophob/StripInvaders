@@ -63,12 +63,24 @@ pages = [
 {
      "name": "mode",
      "type": "Button",
-     "x":.2, "y":.55,
+     "x":.0, "y":.55,
      "width":.6, "height":.2,
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
      "label": "MODE",
+     "labelSize": "18",
+},
+/* -- AUDIO toggle PRESET Buttons */
+{
+     "name": "audio",
+     "type": "Button",
+     "x":.0, "y":.55,
+     "width":.6, "height":.2,
+     "mode": "toggle",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "Audio",
      "labelSize": "18",
 },
 

@@ -14,6 +14,7 @@
 #define OSC_MSG_SET_B "/knbr"
 #define OSC_MSG_SET_DELAY "/delay"
 #define OSC_MSG_CHANGE_MODE "/mode"
+#define OSC_MSG_AUDIO "/audio"
 
 #define OSC_WORKARROUND_TIME 2
 //*************************/
@@ -27,12 +28,21 @@ int clockPin = 3;
 
 uint8_t DELAY = 20;
 
+
+//*************************/
+// Audio input
+boolean isAudioVolumeEnabled;
+float audioVol;
+uint16_t maxVal;
+
+
 //*************************/
 // Network settings
 byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
 byte myIp[4]  = { 192, 168, 111, 222 };
 int serverPort  = 10000;
 int oscCallBackWorkarround;
+
 
 //*************************/
 // Misc
@@ -58,6 +68,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
+ oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
 
  //init
  oscR = 255;
@@ -112,7 +123,7 @@ void setup(){
 /**
  *  LOOP
  */  
-void loop(){  
+void loop(){    
   // This actually runs the Bonjour module. YOU HAVE TO CALL THIS PERIODICALLY,
   // OR NOTHING WILL WORK! Preferably, call it once per loop().
   EthernetBonjour.run();
@@ -124,6 +135,8 @@ void loop(){
   if (oscCallBackWorkarround>0) {
     oscCallBackWorkarround--;
   }
+  
+  loopAudioSensor();
   
   switch (mode) {
     case 0:
@@ -220,6 +233,18 @@ void oscCallbackB(OSCMessage *_mes){
 #endif  
 }
 
+
+void oscCallbackAudio(OSCMessage *_mes){
+  int arg=_mes->getArgInt32(0);
+  if (arg==1) {
+    isAudioVolumeEnabled = true;
+  } else {
+    isAudioVolumeEnabled = false;
+  }
+  
+}
+
+
 // change mode
 void oscCallbackChangeMode(OSCMessage *_mes){
   //workarround that osc messages arrives twice...
@@ -286,6 +311,12 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
     r = r*(oscR+1) >> 8;
     g = g*(oscG+1) >> 8;
     b = b*(oscB+1) >> 8;
+  }
+  
+  if (isAudioVolumeEnabled) {
+    r *= audioVol;
+    g *= audioVol;
+    b *= audioVol;
   }
   
   strip.setPixelColor(i, r, g, b);
