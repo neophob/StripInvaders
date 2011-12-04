@@ -75,8 +75,8 @@ pages = [
 {
      "name": "audio",
      "type": "Button",
-     "x":.0, "y":.55,
-     "width":.6, "height":.2,
+     "x":.7, "y":.55,
+     "width":.25, "height":.2,
      "mode": "toggle",
      "color": "#fc8000",
      "stroke": "#7e4000",
