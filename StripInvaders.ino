@@ -313,6 +313,7 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
     b = b*(oscB+1) >> 8;
   }
   
+  //audio volume fx
   if (isAudioVolumeEnabled) {
     r *= audioVol;
     g *= audioVol;
