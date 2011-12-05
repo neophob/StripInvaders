@@ -47,6 +47,7 @@ pages = [
     "isXFader" : false,
     "isVertical" : true,
 },
+/* speed slider */
 {
     "name":"delay",
     "type":"Slider",
@@ -58,7 +59,16 @@ pages = [
     "isXFader" : false,
     "isVertical" : true,
 },
-
+{
+	    "name": "delayLabel",
+	    "type": "Label",
+	    "x": 0.75, "y": 0.5,
+	    "width": .22,
+	    "height": .4,
+	    "color": "#FFFF00",
+	    "value": "Delay",
+},
+	
 /* -- RANDOM PRESET Buttons */
 {
      "name": "mode",
