@@ -75,7 +75,7 @@ pages = [
 {
      "name": "audio",
      "type": "Button",
-     "x":.6, "y":.55,
+     "x":.65, "y":.55,
      "width":.35, "height":.2,
      "mode": "toggle",
      "color": "#fc8000",
@@ -89,7 +89,7 @@ pages = [
      "name": "refreshButton",
      "type": "Button",
      "x": 0.5, "y": .8,
-     "width": .25, "height": .1,
+     "width": .22, "height": .1,
      "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
@@ -101,8 +101,8 @@ pages = [
 {
     "name": "tabButton",
     "type": "Button",
-    "x": 0.8, "y": .8,
-    "width": .25, "height": .1,
+    "x": 0.75, "y": .8,
+    "width": .22, "height": .1,
     "mode": "toggle",
     "color": "#fc8000",
     "stroke": "#7e4000",
