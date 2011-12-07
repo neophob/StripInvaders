@@ -23,8 +23,8 @@
 #define NR_OF_PIXELS 160
 
 //output pixels
-int dataPin = 2;       
-int clockPin = 3;  
+int dataPin = 3;       
+int clockPin = 2;  
 
 uint8_t DELAY = 20;
 
@@ -54,6 +54,9 @@ uint8_t oscR, oscG, oscB, mode;
 OSCServer oscServer;
 
 #define USE_SERIAL_DEBUG 1
+
+//uncomment it to enable audio
+//#define USE_AUDIO_INPUT 1
 
 /**
  *  SETUP
@@ -136,7 +139,9 @@ void loop(){
     oscCallBackWorkarround--;
   }
   
+#ifdef USE_AUDIO_INPUT
   loopAudioSensor();
+#endif
   
   switch (mode) {
     case 0:
@@ -313,12 +318,14 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
     b = b*(oscB+1) >> 8;
   }
   
+#ifdef USE_AUDIO_INPUT  
   //audio volume fx
   if (isAudioVolumeEnabled) {
     r *= audioVol;
     g *= audioVol;
     b *= audioVol;
   }
+#endif
   
   strip.setPixelColor(i, r, g, b);
 }
