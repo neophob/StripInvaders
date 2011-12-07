@@ -1,5 +1,8 @@
 //StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
-//TODO: add bonjour http://gkaindl.com/software/arduino-ethernet/bonjour
+//Network/OSC Enabled Strip Controller
+//Needed 3rd Party Library:
+//  -http://gkaindl.com/software/arduino-ethernet/bonjour (Bonjour)
+//  -https://github.com/neophob/WS2801-Library (WS2801)
 
 #include <SPI.h>
 #include <Ethernet.h>
