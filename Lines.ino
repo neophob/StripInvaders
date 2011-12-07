@@ -88,7 +88,6 @@ void fadeToNewColor(boolean sleep) {
     uint32_t c = Color(rr, gg, bb);
     
     for (int i=0; i < strip.numPixels(); i++) {
-      //strip.setPixelColor(i, c);
       setTintPixelColor(i, c);
     }
     

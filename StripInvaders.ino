@@ -3,6 +3,7 @@
 //Needed 3rd Party Library:
 //  -http://gkaindl.com/software/arduino-ethernet/bonjour (Bonjour)
 //  -https://github.com/neophob/WS2801-Library (WS2801)
+//  -https://github.com/neophob/ArdOSC (AndOSC)
 
 #include <SPI.h>
 #include <Ethernet.h>
@@ -22,7 +23,7 @@
 #define OSC_WORKARROUND_TIME 2
 //*************************/
 // WS2801
-//how many pixels
+//how many pixels, I use 32 pixels/m
 #define NR_OF_PIXELS 160
 
 //output pixels
@@ -43,6 +44,8 @@ uint16_t maxVal;
 // Network settings
 byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
 byte myIp[4]  = { 192, 168, 111, 222 };
+//byte myIp[4]  = { 10, 0, 1, 111 };
+
 int serverPort  = 10000;
 int oscCallBackWorkarround;
 
@@ -61,9 +64,9 @@ OSCServer oscServer;
 //uncomment it to enable audio
 //#define USE_AUDIO_INPUT 1
 
-/**
+/******************************************************************************************
  *  SETUP
- */
+ *****************************************************************************************/
 void setup(){ 
  Ethernet.begin(myMac ,myIp); 
  oscServer.begin(serverPort);
@@ -126,16 +129,16 @@ void setup(){
 #endif
 }
 
-/**
+/*****************************************************************************************
  *  LOOP
- */  
+ *****************************************************************************************/  
 void loop(){    
   // This actually runs the Bonjour module. YOU HAVE TO CALL THIS PERIODICALLY,
   // OR NOTHING WILL WORK! Preferably, call it once per loop().
   EthernetBonjour.run();
   
   if (oscServer.aviableCheck()>0){
-     //Serial.println("alive! "); 
+    //we need to call available check to update the osc server
   }
   
   if (oscCallBackWorkarround>0) {
@@ -182,12 +185,16 @@ void synchronousBlink() {
 //*************************/
 // OSC callback
 
+// SPEED
 void oscCallbackDelay(OSCMessage *_mes){
   //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  DELAY = byte( _mes->getArgFloat(0)*100.0f );
+  DELAY = byte( _mes->getArgFloat(0)*10.0f );
+  if (DELAY==0) {
+    DELAY = 1;
+  }
   synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
@@ -241,14 +248,23 @@ void oscCallbackB(OSCMessage *_mes){
 #endif  
 }
 
-
+// AUDIO
 void oscCallbackAudio(OSCMessage *_mes){
+  //workarround that osc messages arrives twice...
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+
   int arg=_mes->getArgInt32(0);
   if (arg==1) {
     isAudioVolumeEnabled = true;
   } else {
     isAudioVolumeEnabled = false;
   }
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("isAudioVolumeEnabled: ");
+  Serial.println(isAudioVolumeEnabled, DEC);
+#endif  
   
 }
 
