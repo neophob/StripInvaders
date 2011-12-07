@@ -15,9 +15,9 @@ void loopAudioSensor() {
   }
   
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("sensorValue: ");
+  Serial.print("sens:");
   Serial.print(sensorValue, DEC);
-  Serial.print(" audioVol: ");
+  Serial.print(" av:");
   Serial.println(audioVol, DEC);
 #endif 
 

@@ -6,6 +6,7 @@ byte kr=0;
 byte krDirection=0;
 
 void setupKnightRider() {
+  //nothing todo
 }
 
 void loopKnightRider() {

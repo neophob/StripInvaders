@@ -20,6 +20,7 @@
 #define OSC_MSG_CHANGE_MODE "/mode"
 #define OSC_MSG_AUDIO "/audio"
 
+
 #define OSC_WORKARROUND_TIME 2
 //*************************/
 // WS2801
@@ -52,12 +53,13 @@ int oscCallBackWorkarround;
 
 //*************************/
 // Misc
-#define MAX_NR_OF_MODES 5
+#define MAX_NR_OF_MODES 6
 
 WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 int ledPin =  9;
 uint8_t oscR, oscG, oscB, mode;
 OSCServer oscServer;
+int frames=0;
 
 #define USE_SERIAL_DEBUG 1
 
@@ -77,7 +79,10 @@ void setup(){
  oscServer.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
+
+#ifdef USE_AUDIO_INPUT
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
+#endif
 
  //init
  oscR = 255;
@@ -103,7 +108,7 @@ void setup(){
   // Arduino via the host name "arduino.local", provided that your operating
   // system is Bonjour-enabled (such as MacOS X).
   // Always call this before any other method!
-  EthernetBonjour.begin("StripController");
+  EthernetBonjour.begin("Invader");
   
   // Now let's register the service we're offering (a web service) via Bonjour!
   // To do so, we call the addServiceRecord() method. The first argument is the
@@ -120,12 +125,12 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  EthernetBonjour.addServiceRecord("StripController._http",
+  EthernetBonjour.addServiceRecord("Invader._http",
                                    10000,
                                    MDNSServiceTCP);
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
-  Serial.println("Hello World!");
+  Serial.println("Invader");
 #endif
 }
 
@@ -165,8 +170,12 @@ void loop(){
     case 4:
           loopRainbow();    
           break;
+    case 5:
+          loopTrippleStep();    
+          break;
   }
   
+  frames++;
 }
 
 //convert a float value to a byte value
@@ -191,10 +200,8 @@ void oscCallbackDelay(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  DELAY = byte( _mes->getArgFloat(0)*10.0f );
-  if (DELAY==0) {
-    DELAY = 1;
-  }
+  //delay between 0ms and 100ms
+  DELAY = byte( _mes->getArgFloat(0)*100.0f );
   synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
@@ -213,7 +220,7 @@ void oscCallbackR(OSCMessage *_mes){
   synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("R: ");
+  Serial.print("R:");
   Serial.println(oscR, DEC);
 #endif 
 }
@@ -228,7 +235,7 @@ void oscCallbackG(OSCMessage *_mes){
   synchronousBlink();  
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("G: ");
+  Serial.print("G:");
   Serial.println(oscG, DEC);
 #endif
 }
@@ -243,11 +250,12 @@ void oscCallbackB(OSCMessage *_mes){
   synchronousBlink();  
   
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("B: ");
+  Serial.print("B:");
   Serial.println(oscB, DEC);
 #endif  
 }
 
+#ifdef USE_AUDIO_INPUT  
 // AUDIO
 void oscCallbackAudio(OSCMessage *_mes){
   //workarround that osc messages arrives twice...
@@ -262,11 +270,11 @@ void oscCallbackAudio(OSCMessage *_mes){
   }
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("isAudioVolumeEnabled: ");
+  Serial.print("audio:");
   Serial.println(isAudioVolumeEnabled, DEC);
 #endif  
-  
 }
+#endif
 
 
 // change mode
@@ -305,6 +313,9 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           break;
     case 4:
           setupRainbow();    
+          break;
+    case 5:
+          setupTrippleStep();    
           break;
   }  
 
@@ -360,3 +371,18 @@ uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
   c |= b;
   return c;
 }
+
+//Input a value 0 to 255 to get a color value.
+//The colours are a transition r - g -b - back to r
+uint32_t Wheel(byte WheelPos) {
+  if (WheelPos < 85) {
+    return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if (WheelPos < 170) {
+    WheelPos -= 85;
+    return Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+    WheelPos -= 170; 
+    return Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
+

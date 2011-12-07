@@ -37,10 +37,8 @@ void loopLines() {
     
   for (int i=0; i < strip.numPixels(); i++) {
     if (i>=lines.ofs+lines.del && i<lines.ofs+lines.pos) {
-      //strip.setPixelColor(i, lines.col);
       setTintPixelColor(i, lines.col);
     } else {
-      //strip.setPixelColor(i, clearCol);
       setTintPixelColor(i, clearCol);
     }      
   }

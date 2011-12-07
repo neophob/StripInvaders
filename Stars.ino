@@ -3,7 +3,7 @@
 //some leds are fading in, others are fading out...
 
 //just a constant for the random selection
-#define RND 255
+#define RND 512
 
 struct star {
   uint8_t col;
@@ -27,11 +27,8 @@ void setupStars() {
 
 
 void loopStars() {
-  uint8_t currentR, currentG, currentB;
-  uint8_t endR, endG, endB;
   
-  for (int i=0; i < strip.numPixels(); i++) {
-    
+  for (int i=0; i < strip.numPixels(); i++) {    
     // ====
     // INIT
     // ====
@@ -49,7 +46,7 @@ void loopStars() {
       stars[i].col+=2;      
       setTintPixelColor(i, Color(stars[i].col, stars[i].col, stars[i].col));
       
-      if (stars[i].col >= 192+random(64)) {
+      if (stars[i].col >= 190+random(64)) {
         stars[i].pos = 2;
       }
     } else 
@@ -73,9 +70,7 @@ void loopStars() {
   }
   
   strip.show(); 
-  delay(DELAY);  
-
-  
+  delay(DELAY);    
 }
 
 
