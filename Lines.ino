@@ -2,6 +2,8 @@
 //
 //Fancy lines effects
 
+int andMask[3];
+
 struct line {
   uint8_t ofs;
   uint8_t pos;
@@ -18,15 +20,23 @@ uint8_t clearColB;
 uint32_t clearCol;
 
 
-void setupLines() {
-  //fadeToNewColor(false);
-  newAnimation(false); 
+void setupLines(boolean fancyMode) {
+  if (fancyMode) {
+    andMask[0] = 0x0000ff; 
+    andMask[1] = 0x00ff00;
+    andMask[2] = 0xff0000;
+  } else {
+    andMask[0] = 0xffffff;
+    andMask[1] = 0xffffff;
+    andMask[2] = 0xffffff;    
+  }
+  newAnimation(); 
 }
-
 
 void loopLines() {
   if ((lines.pos > 0 && lines.pos == lines.del) || lines.pos > strip.numPixels()) {
-    newAnimation(true);
+    fadeToNewColor();
+    newAnimation();
   }
   
   if (lines.pos > lines.length) {
@@ -37,21 +47,16 @@ void loopLines() {
     
   for (int i=0; i < strip.numPixels(); i++) {
     if (i>=lines.ofs+lines.del && i<lines.ofs+lines.pos) {
-      setTintPixelColor(i, lines.col);
+      setTintPixelColor(i, lines.col & andMask[i%3]);
     } else {
-      setTintPixelColor(i, clearCol);
+      setTintPixelColor(i, clearCol & andMask[i%3]);
     }      
-  }
-  
-  strip.show(); 
-  delay(DELAY);  
+  }  
 }
 
 
 //init a new line animation
-void newAnimation(boolean sleep) {
-  fadeToNewColor(sleep);
-  
+void newAnimation() {
   lines.length = 0;
   while (lines.length<16) {
     lines.ofs = random(strip.numPixels()); 
@@ -64,7 +69,7 @@ void newAnimation(boolean sleep) {
 
 
 //fade currentbackground color to next, random color
-void fadeToNewColor(boolean sleep) {
+void fadeToNewColor() {
   uint8_t oldR = clearColR;
   uint8_t oldG = clearColG;
   uint8_t oldB = clearColB;
@@ -86,13 +91,11 @@ void fadeToNewColor(boolean sleep) {
     uint32_t c = Color(rr, gg, bb);
     
     for (int i=0; i < strip.numPixels(); i++) {
-      setTintPixelColor(i, c);
+      setTintPixelColor(i, c & andMask[i%3]);
     }
     
-    if (sleep) {
-      strip.show(); 
-      delay(DELAY);      
-    }
+    strip.show(); 
+    delay(DELAY);      
   }
   
 }

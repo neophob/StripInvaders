@@ -37,9 +37,5 @@ void loopKnightRider() {
    krDirection = 0;
    kr = 0; 
   }  
-
-  strip.show(); 
-  delay(DELAY);  
-  
 }
 

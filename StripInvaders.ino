@@ -21,7 +21,7 @@
 #define OSC_MSG_AUDIO "/audio"
 
 
-#define OSC_WORKARROUND_TIME 2
+#define OSC_WORKARROUND_TIME 4
 //*************************/
 // WS2801
 //how many pixels, I use 32 pixels/m
@@ -70,6 +70,13 @@ int frames=0;
  *  SETUP
  *****************************************************************************************/
 void setup(){ 
+ //init
+ oscR = 255;
+ oscG = 255;
+ oscB = 255;
+ mode=0;
+ oscCallBackWorkarround = 0;
+
  Ethernet.begin(myMac ,myIp); 
  oscServer.begin(serverPort);
  
@@ -83,15 +90,10 @@ void setup(){
 #ifdef USE_AUDIO_INPUT
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
 #endif
-
- //init
- oscR = 255;
- oscG = 255;
- oscB = 255;
- mode=0;
- oscCallBackWorkarround = 0;
  
- setupLines();
+ //init effect
+ setupLines(false);
+ 
  pinMode(ledPin, OUTPUT);  
  
  //we-are-ready indicator
@@ -130,7 +132,7 @@ void setup(){
                                    MDNSServiceTCP);
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
-  Serial.println("Invader");
+  Serial.println("INVDR!");
 #endif
 }
 
@@ -171,10 +173,12 @@ void loop(){
           loopRainbow();    
           break;
     case 5:
-          loopTrippleStep();    
+          loopLines();    
           break;
   }
   
+  strip.show(); 
+  delay(DELAY);  
   frames++;
 }
 
@@ -202,10 +206,10 @@ void oscCallbackDelay(OSCMessage *_mes){
   
   //delay between 0ms and 100ms
   DELAY = byte( _mes->getArgFloat(0)*100.0f );
-  synchronousBlink();
+//  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("Delay: ");
+  Serial.print("D:");
   Serial.println(DELAY, DEC);
 #endif 
 }
@@ -217,7 +221,7 @@ void oscCallbackR(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
   oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
-  synchronousBlink();
+//  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("R:");
@@ -232,7 +236,7 @@ void oscCallbackG(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME; 
   
   oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
-  synchronousBlink();  
+//  synchronousBlink();  
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("G:");
@@ -247,7 +251,7 @@ void oscCallbackB(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
   oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
-  synchronousBlink();  
+//  synchronousBlink();  
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("B:");
@@ -270,7 +274,7 @@ void oscCallbackAudio(OSCMessage *_mes){
   }
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("audio:");
+  Serial.print("A:");
   Serial.println(isAudioVolumeEnabled, DEC);
 #endif  
 }
@@ -295,12 +299,12 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   }
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("Setup start: ");
+  Serial.print("SP ");
 #endif  
   
   switch (mode) {
     case 0:
-          setupLines();
+          setupLines(false);
           break;
     case 1:
           setupStars();    
@@ -315,14 +319,14 @@ void oscCallbackChangeMode(OSCMessage *_mes){
           setupRainbow();    
           break;
     case 5:
-          setupTrippleStep();    
+          setupLines(true);    
           break;
   }  
 
   synchronousBlink();
   
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("mode: ");
+  Serial.print("M:");
   Serial.println(mode);
 #endif  
   

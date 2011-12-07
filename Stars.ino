@@ -68,9 +68,6 @@ void loopStars() {
       }
     }    
   }
-  
-  strip.show(); 
-  delay(DELAY);    
 }
 
 

@@ -16,8 +16,5 @@ void loopRainbow() {
       // the % 96 is to make the wheel cycle around
     setTintPixelColor(i, Wheel( ((i * 256 / strip.numPixels()) + frames) % 256) );
   }  
-
-  strip.show(); 
-  delay(DELAY);  
 }
 
