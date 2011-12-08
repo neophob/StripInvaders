@@ -1,3 +1,4 @@
+#ifdef USE_AUDIO_INPUT
 
 //TODO: maybe we need to smooth the values (arduino example)
 void loopAudioSensor() {
@@ -22,3 +23,6 @@ void loopAudioSensor() {
 #endif 
 
 }
+
+#endif
+

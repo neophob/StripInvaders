@@ -34,13 +34,6 @@ uint8_t DELAY = 20;
 uint8_t delayTodo = 0;
 
 //*************************/
-// Audio input
-boolean isAudioVolumeEnabled;
-float audioVol;
-uint16_t maxVal;
-
-
-//*************************/
 // Network settings
 byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
 byte myIp[4]  = { 192, 168, 111, 222 };
@@ -66,7 +59,15 @@ int frames=0;
 //#define USE_AUDIO_INPUT 1
 
 //some common color defines
-const uint16_t WHITE_COLOR = 0xffffff;
+const uint32_t WHITE_COLOR = 0xffffff;
+
+//*************************/
+// Audio input
+#ifdef USE_AUDIO_INPUT
+  boolean isAudioVolumeEnabled;
+  float audioVol;
+  uint16_t maxVal;
+#endif
 
 /******************************************************************************************
  *  SETUP
@@ -159,32 +160,32 @@ void loop(){
   loopAudioSensor();
 #endif
   
-  switch (mode) {
-    case 0:
+    switch (mode) {
+      case 0:
           loopLines();
           break;
-    case 1:
+      case 1:
           loopStars();    
           break;
-    case 2:
+      case 2:
           loopSolid();    
           break;
-    case 3:
+      case 3:
           loopKnightRider();    
           break;
-    case 4:
+      case 4:
           loopRainbow();    
           break;
-    case 5:
+      case 5:
           loopLines();    
           break;
-  }
-  
-  strip.show(); 
-    
+    }
+    strip.show();    
   } else {
    //decrease delay, not ready yet
-   delayTodo--;
+   if (delayTodo>0) {
+     delayTodo--;
+   }
    delay(1);
   } 
   
