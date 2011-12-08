@@ -20,19 +20,18 @@
 #define OSC_MSG_CHANGE_MODE "/mode"
 #define OSC_MSG_AUDIO "/audio"
 
-
-#define OSC_WORKARROUND_TIME 2
 //*************************/
 // WS2801
 //how many pixels, I use 32 pixels/m
 #define NR_OF_PIXELS 160
+#define OSC_WORKARROUND_TIME 2
 
 //output pixels
 int dataPin = 3;       
 int clockPin = 2;  
 
 uint8_t DELAY = 20;
-
+uint8_t delayTodo = 0;
 
 //*************************/
 // Audio input
@@ -48,8 +47,7 @@ byte myIp[4]  = { 192, 168, 111, 222 };
 //byte myIp[4]  = { 10, 0, 1, 111 };
 
 int serverPort  = 10000;
-int oscCallBackWorkarround;
-
+byte oscCallBackWorkarround;
 
 //*************************/
 // Misc
@@ -153,10 +151,10 @@ void loop(){
     //we need to call available check to update the osc server
   }
   
-  if (oscCallBackWorkarround>0) {
-    oscCallBackWorkarround--;
-  }
-  
+  if (delayTodo<1) {
+    //delay finished, update it
+    delayTodo=DELAY;
+    
 #ifdef USE_AUDIO_INPUT
   loopAudioSensor();
 #endif
@@ -183,7 +181,17 @@ void loop(){
   }
   
   strip.show(); 
-  delay(DELAY);  
+    
+  } else {
+   //decrease delay, not ready yet
+   delayTodo--;
+   delay(1);
+  } 
+  
+  if (oscCallBackWorkarround>0) {
+    oscCallBackWorkarround--;
+  }
+  
   frames++;
 }
 
@@ -199,13 +207,11 @@ void synchronousBlink() {
 
 // SPEED
 void oscCallbackDelay(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-  
-  //delay between 0ms and 100ms
+
+  //delay between 0ms and 120ms
   DELAY = byte( _mes->getArgFloat(0)*120.0f );
-//  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("D:");
@@ -215,12 +221,10 @@ void oscCallbackDelay(OSCMessage *_mes){
 
 // R
 void oscCallbackR(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-  
+
   oscR = byte( _mes->getArgFloat(0)*255.f );
-//  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("R:");
@@ -230,12 +234,10 @@ void oscCallbackR(OSCMessage *_mes){
 
 // G
 void oscCallbackG(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME; 
-  
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+
   oscG = byte( _mes->getArgFloat(0)*255.f );
-//  synchronousBlink();  
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("G:");
@@ -245,12 +247,10 @@ void oscCallbackG(OSCMessage *_mes){
 
 // B
 void oscCallbackB(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
   oscB = byte( _mes->getArgFloat(0)*255.f );
-//  synchronousBlink();  
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("B:");
@@ -261,7 +261,6 @@ void oscCallbackB(OSCMessage *_mes){
 #ifdef USE_AUDIO_INPUT  
 // AUDIO
 void oscCallbackAudio(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
@@ -282,10 +281,9 @@ void oscCallbackAudio(OSCMessage *_mes){
 
 // change mode
 void oscCallbackChangeMode(OSCMessage *_mes){
-  //workarround that osc messages arrives twice...
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-  
+
   int arg=_mes->getArgInt32(0);
   if (arg == 0) {
     return;
@@ -374,6 +372,7 @@ uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
   c |= b;
   return c;
 }
+
 
 //Input a value 0 to 255 to get a color value.
 //The colours are a transition r - g -b - back to r
