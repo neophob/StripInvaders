@@ -188,6 +188,12 @@ uint8_t getRgbValueFromFloat(float f) {
   return byte(f);
 }
 
+//convert a float value to a byte value
+uint8_t getRgbValueFromInt(int i) {
+  i<<=1;
+  return (uint8_t)i;
+}
+
 //just blink
 void synchronousBlink() {
   digitalWrite(ledPin, HIGH);
@@ -220,7 +226,7 @@ void oscCallbackR(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  oscR = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  oscR = getRgbValueFromInt( _mes->getArgInt32(0) );
 //  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
