@@ -11,6 +11,7 @@
 #include "WS2801.h"
 #include <EthernetBonjour.h>
 
+
 //*************************/
 // OSC Stuff
 #define OSC_MSG_SET_R "/knbb" //simple method to fix the fancy strip color order
@@ -35,8 +36,8 @@ uint8_t delayTodo = 0;
 
 //*************************/
 // Network settings
-byte myMac[6] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
-byte myIp[4]  = { 192, 168, 111, 222 };
+byte myMac[] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
+byte myIp[]  = { 192, 168, 111, 222 };
 //byte myIp[4]  = { 10, 0, 1, 111 };
 
 int serverPort  = 10000;
@@ -80,7 +81,13 @@ void setup(){
  mode=0;
  oscCallBackWorkarround = 0;
 
+#ifdef USE_SERIAL_DEBUG
+  Serial.begin(115200);
+  Serial.println("INVDR!");
+#endif
+
  Ethernet.begin(myMac ,myIp); 
+ 
  oscServer.begin(serverPort);
  
  //set callback function
@@ -130,14 +137,10 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  //EthernetBonjour.addServiceRecord("Invader._osc",
-  //                                 10000,
-  //                                 MDNSServiceUDP);
+  EthernetBonjour.addServiceRecord("Invader._osc",
+                                   10000,
+                                   MDNSServiceUDP);
   
-#ifdef USE_SERIAL_DEBUG
-  Serial.begin(115200);
-  Serial.println("INVDR!");
-#endif
 }
 
 /*****************************************************************************************
@@ -204,7 +207,7 @@ void synchronousBlink() {
 //*************************/
 // OSC callback
 
-// SPEED
+// DELAY
 void oscCallbackDelay(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
