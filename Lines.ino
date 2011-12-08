@@ -2,6 +2,7 @@
 //
 //Fancy lines effects
 
+const uint8_t FADER_STEPS = 25;
 int andMask[3];
 
 struct line {
@@ -11,7 +12,6 @@ struct line {
   uint8_t length;
   uint32_t col;
 };
-
 line lines;
 
 uint8_t clearColR;
@@ -19,7 +19,7 @@ uint8_t clearColG;
 uint8_t clearColB;
 uint32_t clearCol;
 
-
+//init effect
 void setupLines(boolean fancyMode) {
   if (fancyMode) {
     andMask[0] = 0x0000ff; 
@@ -33,6 +33,7 @@ void setupLines(boolean fancyMode) {
   newAnimation(); 
 }
 
+//main loop
 void loopLines() {
   if ((lines.pos > 0 && lines.pos == lines.del) || lines.pos > strip.numPixels()) {
     fadeToNewColor();
@@ -79,12 +80,11 @@ void fadeToNewColor() {
   clearColB = random(90);
   clearCol = Color(clearColR, clearColG, clearColB);
   
-  int steps = 25;
-  float stepsR = (clearColR-oldR)/(float)steps;
-  float stepsG = (clearColG-oldG)/(float)steps;
-  float stepsB = (clearColB-oldB)/(float)steps;
+  float stepsR = (clearColR-oldR)/(float)FADER_STEPS;
+  float stepsG = (clearColG-oldG)/(float)FADER_STEPS;
+  float stepsB = (clearColB-oldB)/(float)FADER_STEPS;
 
-  for (int s=0; s<steps+1; s++) {
+  for (uint8_t s=0; s<FADER_STEPS+1; s++) {
     uint8_t rr=oldR+stepsR*s;    
     uint8_t gg=oldG+stepsG*s;
     uint8_t bb=oldB+stepsB*s;

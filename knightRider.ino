@@ -4,6 +4,7 @@
 
 byte kr=0;
 byte krDirection=0;
+uint32_t color;
 
 void setupKnightRider() {
   //nothing todo
@@ -15,11 +16,11 @@ void loopKnightRider() {
   }
 
   if (kr<strip.numPixels()-1) {
-    setTintPixelColor(kr+1, Color(255, 255, 255));
+    setTintPixelColor(kr+1, WHITE_COLOR);
   }
-  setTintPixelColor(kr, Color(255, 255, 255));
+  setTintPixelColor(kr, WHITE_COLOR);
   if (kr>1) {
-    setTintPixelColor(kr-1, Color(255, 255, 255));
+    setTintPixelColor(kr-1, WHITE_COLOR);
   }
  
   if (krDirection==0) {
