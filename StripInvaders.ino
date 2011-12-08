@@ -1,7 +1,7 @@
 //StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
 //Network/OSC Enabled Strip Controller
 //Needed 3rd Party Library:
-//  -http://gkaindl.com/software/arduino-ethernet/bonjour (Bonjour)
+//  -https://github.com/neophob/EthernetBonjour (Bonjour)
 //  -https://github.com/neophob/WS2801-Library (WS2801)
 //  -https://github.com/neophob/ArdOSC (AndOSC)
 
@@ -61,10 +61,14 @@ uint8_t oscR, oscG, oscB, mode;
 OSCServer oscServer;
 int frames=0;
 
+//use serail debug or not
 #define USE_SERIAL_DEBUG 1
 
 //uncomment it to enable audio
 //#define USE_AUDIO_INPUT 1
+
+//some common color defines
+const uint16_t WHITE_COLOR = 0xffffff;
 
 /******************************************************************************************
  *  SETUP

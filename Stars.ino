@@ -1,9 +1,10 @@
 //StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
 //
 //some leds are fading in, others are fading out...
+//TODO: reduce memory amount, move col function out to ws2801 library
 
 //just a constant for the random selection
-#define RND 512
+const uint16_t RND = 512;
 
 struct star {
   uint8_t col;

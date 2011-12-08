@@ -7,7 +7,7 @@ void setupSolid() {
 
 void loopSolid() {
   for (int i=0; i < strip.numPixels(); i++) {
-      setTintPixelColor(i, 0xffffff);
+      setTintPixelColor(i, WHITE_COLOR);
   }
 }
 
