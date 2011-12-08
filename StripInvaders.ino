@@ -21,7 +21,7 @@
 #define OSC_MSG_AUDIO "/audio"
 
 
-#define OSC_WORKARROUND_TIME 4
+#define OSC_WORKARROUND_TIME 2
 //*************************/
 // WS2801
 //how many pixels, I use 32 pixels/m
@@ -131,9 +131,10 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  EthernetBonjour.addServiceRecord("Invader._http",
-                                   10000,
-                                   MDNSServiceTCP);
+  //EthernetBonjour.addServiceRecord("Invader._osc",
+  //                                 10000,
+  //                                 MDNSServiceUDP);
+  
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
   Serial.println("INVDR!");
@@ -186,18 +187,6 @@ void loop(){
   frames++;
 }
 
-//convert a float value to a byte value
-uint8_t getRgbValueFromFloat(float f) {
-  f *= 255.0f;
-  return byte(f);
-}
-
-//convert a float value to a byte value
-uint8_t getRgbValueFromInt(int i) {
-  i<<=1;
-  return (uint8_t)i;
-}
-
 //just blink
 void synchronousBlink() {
   digitalWrite(ledPin, HIGH);
@@ -215,7 +204,7 @@ void oscCallbackDelay(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
   //delay between 0ms and 100ms
-  DELAY = byte( _mes->getArgFloat(0)*100.0f );
+  DELAY = byte( _mes->getArgFloat(0)*120.0f );
 //  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
@@ -230,7 +219,7 @@ void oscCallbackR(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  oscR = getRgbValueFromInt( _mes->getArgInt32(0) );
+  oscR = byte( _mes->getArgFloat(0)*255.f );
 //  synchronousBlink();
 
 #ifdef USE_SERIAL_DEBUG
@@ -245,7 +234,7 @@ void oscCallbackG(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME; 
   
-  oscG = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  oscG = byte( _mes->getArgFloat(0)*255.f );
 //  synchronousBlink();  
 
 #ifdef USE_SERIAL_DEBUG
@@ -260,7 +249,7 @@ void oscCallbackB(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  oscB = getRgbValueFromFloat( _mes->getArgFloat(0) );
+  oscB = byte( _mes->getArgFloat(0)*255.f );
 //  synchronousBlink();  
   
 #ifdef USE_SERIAL_DEBUG
@@ -298,7 +287,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
   int arg=_mes->getArgInt32(0);
-  if (arg != 1) {
+  if (arg == 0) {
     return;
   }
   

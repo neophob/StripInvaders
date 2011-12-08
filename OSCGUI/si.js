@@ -21,7 +21,7 @@ pages = [
     "width":.22, "height":.4,
     "stroke": "#550000",
     "color": "#ff0000",
-    "min": 1, "max": 127,
+    "min": 0.0, "max": 1.0,
     "isXFader" : false,
     "isVertical" : true,
 },
