@@ -152,7 +152,11 @@ void loop(){
     //we need to call available check to update the osc server
   }
   
-  if (delayTodo<1) {
+  if (delayTodo>0) {
+     //Delay not finished yet
+     delayTodo--;
+     delay(1);
+  } else {
     //delay finished, update it
     delayTodo=DELAY;
     
@@ -181,19 +185,13 @@ void loop(){
           break;
     }
     strip.show();    
-  } else {
-   //decrease delay, not ready yet
-   if (delayTodo>0) {
-     delayTodo--;
-   }
-   delay(1);
+    frames++;
   } 
   
   if (oscCallBackWorkarround>0) {
     oscCallBackWorkarround--;
   }
   
-  frames++;
 }
 
 //just blink
