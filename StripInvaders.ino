@@ -58,7 +58,7 @@ int frames=0;
 #define USE_SERIAL_DEBUG 1
 
 //uncomment it to enable audio
-//#define USE_AUDIO_INPUT 1
+#define USE_AUDIO_INPUT 1
 
 //some common color defines
 const uint32_t WHITE_COLOR = 0xffffff;
@@ -99,9 +99,10 @@ void setup(){
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
  oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
 
-#ifdef USE_AUDIO_INPUT
+//#ifdef USE_AUDIO_INPUT
+ Serial.println("AUD!");
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
-#endif
+//#endif
  
  //init effect
  setupLines(false);
@@ -302,11 +303,15 @@ void oscCallbackAudio(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  int arg=_mes->getArgInt32(0);
-  if (arg==1) {
-    isAudioVolumeEnabled = true;
-  } else {
+  uint8_t arg=_mes->getArgInt32(0) && 0xff;
+  if (arg == 0) {
+    return;
+  }
+
+  if (isAudioVolumeEnabled) {
     isAudioVolumeEnabled = false;
+  } else {
+    isAudioVolumeEnabled = true;
   }
 
 #ifdef USE_SERIAL_DEBUG
@@ -315,6 +320,7 @@ void oscCallbackAudio(OSCMessage *_mes){
 #endif  
 }
 #endif
+
 
 // change mode, use mode nr X
 void oscCallbackChangeModeDirect(OSCMessage *_mes){

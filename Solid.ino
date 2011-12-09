@@ -17,7 +17,7 @@ void loopSolid() {
           setTintPixelColor(i, WHITE_COLOR);
           break;
       case 1:
-          Wheel(frames%255);
+          setTintPixelColor(i, Wheel(frames%255));
           break;
     }      
   }
