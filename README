@@ -8,3 +8,4 @@ Name:	Type:	Range:	Descr:
 /knbb	int	0..127	B Color Vale
 /delay	int	0..127	Delay Value
 /mode	int	0..1	if mode = 1, switch to next effect
+/modd   int     0..n    change to effect x

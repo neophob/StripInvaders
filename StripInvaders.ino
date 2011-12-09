@@ -19,6 +19,7 @@
 #define OSC_MSG_SET_B "/knbr"
 #define OSC_MSG_SET_DELAY "/delay"
 #define OSC_MSG_CHANGE_MODE "/mode"
+#define OSC_MSG_CHANGE_MODE_DIRECT "/modd"
 #define OSC_MSG_AUDIO "/audio"
 
 //*************************/
@@ -27,9 +28,9 @@
 #define NR_OF_PIXELS 160
 #define OSC_WORKARROUND_TIME 2
 
-//output pixels
-int dataPin = 3;       
-int clockPin = 2;  
+//output pixels dni:3/2
+int dataPin = 2; 
+int clockPin = 3;  
 
 uint8_t DELAY = 20;
 uint8_t delayTodo = 0;
@@ -96,6 +97,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_SET_B, &oscCallbackB); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
+ oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
 
 #ifdef USE_AUDIO_INPUT
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
@@ -164,7 +166,9 @@ void loop(){
     delayTodo=DELAY;
     
 #ifdef USE_AUDIO_INPUT
-  loopAudioSensor();
+  if (frames%3==0) {
+    loopAudioSensor();
+  }
 #endif
   
     switch (mode) {
@@ -200,6 +204,40 @@ void synchronousBlink() {
   digitalWrite(ledPin, HIGH);
   delay(20);
   digitalWrite(ledPin, LOW);  
+}
+
+void initMode() {
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("SP ");
+#endif  
+  
+  switch (mode) {
+    case 0:
+          setupLines(false);
+          break;
+    case 1:  
+          setupSolid(0);
+          break;
+    case 2:
+          setupSolid(1);
+          break;
+    case 3:
+          setupKnightRider();    
+          break;
+    case 4:
+          setupRainbow();    
+          break;
+    case 5:
+          setupLines(true);    
+          break;
+  }  
+
+  synchronousBlink();
+  
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("M:");
+  Serial.println(mode);
+#endif  
 }
 
 //*************************/
@@ -278,13 +316,27 @@ void oscCallbackAudio(OSCMessage *_mes){
 }
 #endif
 
+// change mode, use mode nr X
+void oscCallbackChangeModeDirect(OSCMessage *_mes){
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
+  uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  if (arg > MAX_NR_OF_MODES-1) {
+    return;
+  }
 
-// change mode
+  mode=arg;
+  initMode(); 
+}
+
+
+// change mode, just increase current mode
 void oscCallbackChangeMode(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  int arg=_mes->getArgInt32(0);
+  uint8_t arg=_mes->getArgInt32(0) & 0xff;
   if (arg == 0) {
     return;
   }
@@ -295,38 +347,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
     mode = 0; 
   }
 
-#ifdef USE_SERIAL_DEBUG
-  Serial.print("SP ");
-#endif  
-  
-  switch (mode) {
-    case 0:
-          setupLines(false);
-          break;
-    case 1:  
-          setupSolid(0);
-          break;
-    case 2:
-          setupSolid(1);
-          break;
-    case 3:
-          setupKnightRider();    
-          break;
-    case 4:
-          setupRainbow();    
-          break;
-    case 5:
-          setupLines(true);    
-          break;
-  }  
-
-  synchronousBlink();
-  
-#ifdef USE_SERIAL_DEBUG
-  Serial.print("M:");
-  Serial.println(mode);
-#endif  
-  
+  initMode(); 
 }
 
 //*************************/
