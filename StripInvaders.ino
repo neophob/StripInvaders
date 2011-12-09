@@ -171,11 +171,9 @@ void loop(){
       case 0:
           loopLines();
           break;
-      case 1:
-          loopStars();    
-          break;
-      case 2:
-          loopSolid();    
+      case 1:  //SOLID Color White          
+      case 2:  //SOLID Color Wheel      
+          loopSolid();
           break;
       case 3:
           loopKnightRider();    
@@ -305,11 +303,11 @@ void oscCallbackChangeMode(OSCMessage *_mes){
     case 0:
           setupLines(false);
           break;
-    case 1:
-          setupStars();    
+    case 1:  
+          setupSolid(0);
           break;
     case 2:
-          setupSolid();    
+          setupSolid(1);
           break;
     case 3:
           setupKnightRider();    

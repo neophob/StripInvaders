@@ -2,12 +2,13 @@
 //
 //Knight Rider effects
 
-byte kr=0;
+uint16_t kr=0;
 byte krDirection=0;
+byte krSize;
 uint32_t color;
 
 void setupKnightRider() {
-  //nothing todo
+  krSize = strip.numPixels()/10;
 }
 
 void loopKnightRider() {
@@ -15,23 +16,19 @@ void loopKnightRider() {
     strip.setPixelColor(i, 0);
   }
 
-  if (kr<strip.numPixels()-1) {
-    setTintPixelColor(kr+1, WHITE_COLOR);
+  for (int i=kr; i<kr+krSize && i<strip.numPixels(); i++) {
+    setTintPixelColor(i, WHITE_COLOR);
   }
-  setTintPixelColor(kr, WHITE_COLOR);
-  if (kr>1) {
-    setTintPixelColor(kr-1, WHITE_COLOR);
-  }
- 
+
   if (krDirection==0) {
     kr++;
   } else {
     kr--;
   }
   
-  if (kr>strip.numPixels()-1) {
+  if (kr>strip.numPixels()-krSize) {
     krDirection = 1;
-    kr = strip.numPixels();
+    kr = strip.numPixels()-krSize;
   }
   
   if (kr==0) {
