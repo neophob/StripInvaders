@@ -1,33 +1,47 @@
 #ifdef USE_AUDIO_INPUT
 
-//TODO: maybe we need to smooth the values (arduino example)
-void loopAudioSensor() {
+const int numReadings = 4;
+int readings[numReadings];      // the readings from the analog input
+int index = 0;                  // the index of the current reading
+int total = 0;                  // the running total
+int average = 0;                // the average
 
-  uint16_t sensorValue = analogRead(A0); //use A0 to read the electrical signal
-  if (sensorValue > maxVal) {
-    maxVal = sensorValue;
+void loopAudioSensor() {
+  total= total - readings[index];         
+  // read from the sensor:  
+  readings[index] = analogRead(A0); 
+  // add the reading to the total:
+  total= total + readings[index++];       
+  // advance to the next position in the array:         
+
+  // if we're at the end of the array...
+  if (index >= numReadings)              
+    // ...wrap around to the beginning: 
+    index = 0;                           
+
+  // calculate the average:
+  average = total / numReadings;         
+
+  if (average > maxVal) {
+    maxVal = average;
   }
   
   //calculate current volume vs. maximal volume
-  if (sensorValue>0) {
-    audioVol = (1.0f/maxVal)*sensorValue;    
-  }
+  audioVol = (1.0f/maxVal)*average;    
   
   //decrease maximum volume, adjust it
-  if (maxVal>2) {
-    maxVal-=2;  
+  if (maxVal>4) {
+    maxVal-=4;  
   }
   
-/*
+
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("\rsens:");
-  Serial.print(sensorValue, DEC);
+  Serial.print("avg:");
+  Serial.print(average, DEC);
   Serial.print("  \tav:");
-  Serial.print(audioVol, DEC);
-  Serial.print("  \tmx:");
-  Serial.println(maxVal, DEC);
-#endif 
-*/
+  Serial.println(audioVol, DEC);
+#endif
+
 }
 
 #endif

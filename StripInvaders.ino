@@ -167,9 +167,7 @@ void loop(){
     delayTodo=DELAY;
     
 #ifdef USE_AUDIO_INPUT
-  if (frames%3==0) {
-    loopAudioSensor();
-  }
+  loopAudioSensor();
 #endif
   
     switch (mode) {
