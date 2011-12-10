@@ -191,16 +191,16 @@ void loop(){
           break;
       case 1:  //SOLID Color White
       case 2:  //Color Wheel
-      case 5:  //Random Fading
+      case 3:  //Random Fading
           loopSolid();
-          break;
-      case 3:
-      case 6:
-      case 7:
-          loopKnightRider();    
           break;
       case 4:
           loopRainbow();    
+          break;
+      case 5: //1 slider
+      case 6:
+      case 7:
+          loopKnightRider();    
           break;
       //internal mode
       case 200:
@@ -240,19 +240,19 @@ void initMode() {
           setupSolid(1);
           break;
     case 3:
-          setupKnightRider(strip.numPixels()/10, 1);    
+          setupSolid(2);    
           break;
     case 4:
           setupRainbow();    
           break;
     case 5:
-          setupSolid(2);    
+          setupKnightRider(strip.numPixels()/10, 1);    
           break;
     case 6:
           setupKnightRider(strip.numPixels()/10, 4);    
           break;
     case 7:
-          setupKnightRider(strip.numPixels()/20, 8);    
+          setupKnightRider(2, 8);    
           break;
   }  
 

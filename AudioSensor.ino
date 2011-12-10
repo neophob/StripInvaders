@@ -1,6 +1,6 @@
 #ifdef USE_AUDIO_INPUT
 
-const int numReadings = 4;
+const int numReadings = 8;
 int readings[numReadings];      // the readings from the analog input
 int index = 0;                  // the index of the current reading
 int total = 0;                  // the running total
@@ -36,14 +36,14 @@ void loopAudioSensor() {
     maxVal--; 
   }
   
-/*
+
 #ifdef USE_SERIAL_DEBUG
   Serial.print("avg:");
   Serial.print(average, DEC);
   Serial.print("  \tav:");
   Serial.println(audioVol, DEC);
 #endif
-*/
+
 }
 
 #endif
