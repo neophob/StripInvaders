@@ -17,8 +17,6 @@ void setupKnightRider(byte _krSize, byte _howMany) {
 void loopKnightRider() {
   uint32_t clearCol = complementaryColor();  
   for (byte i=0; i < strip.numPixels(); i++) {
-    //maybe set tint?
-//    strip.setPixelColor(i, clearCol);
     setTintPixelColor(i, clearCol);
   }
   

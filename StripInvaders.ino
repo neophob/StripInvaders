@@ -56,6 +56,7 @@ uint8_t faderSteps;
 // Misc
 
 #define MAX_NR_OF_MODES 8
+#define MAX_SLEEP_TIME 160.0f
 
 uint8_t ledPin =  9;
 uint8_t oscR, oscG, oscB;
@@ -272,7 +273,7 @@ void oscCallbackDelay(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
   //delay between 0ms and 120ms
-  DELAY = byte( _mes->getArgFloat(0)*120.0f );
+  DELAY = byte( _mes->getArgFloat(0)*MAX_SLEEP_TIME );
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("D:");

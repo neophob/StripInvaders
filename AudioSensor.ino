@@ -30,8 +30,10 @@ void loopAudioSensor() {
   audioVol = (1.0f/maxVal)*average;    
   
   //decrease maximum volume, adjust it
-  if (maxVal>4) {
-    maxVal-=4;  
+  if (maxVal>2) {
+    maxVal-=2;  
+  } else if (maxVal>1) {
+    maxVal--; 
   }
   
 /*
