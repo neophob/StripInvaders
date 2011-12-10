@@ -114,7 +114,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
 
 //#ifdef USE_AUDIO_INPUT
- Serial.println("AUD!");
+ Serial.println("AUDIO");
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
 //#endif
  
@@ -369,7 +369,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
     return;
   }
   
-  if (mode<MAX_NR_OF_MODES-1) {
+  if (mode<MAX_NR_OF_MODES) {
     mode++;
   } else {
     mode = 0; 
@@ -480,7 +480,7 @@ void faderLoop() {
       setTintPixelColor(i, c);
     }
     
-    if (faderSteps++>FADER_STEPS) {
+    if (faderSteps++>=FADER_STEPS) {
       mode = modeSave;
     }    
 }
