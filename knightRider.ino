@@ -18,7 +18,8 @@ void loopKnightRider() {
   uint32_t clearCol = complementaryColor();  
   for (byte i=0; i < strip.numPixels(); i++) {
     //maybe set tint?
-    strip.setPixelColor(i, clearCol);
+//    strip.setPixelColor(i, clearCol);
+    setTintPixelColor(i, clearCol);
   }
   
   drawKnightRider(howMany);

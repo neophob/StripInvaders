@@ -114,7 +114,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
 
 //#ifdef USE_AUDIO_INPUT
- Serial.println("AUDIO");
+ Serial.println("AU");
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
 //#endif
  
@@ -369,12 +369,18 @@ void oscCallbackChangeMode(OSCMessage *_mes){
     return;
   }
   
-  if (mode<MAX_NR_OF_MODES) {
-    mode++;
+//  Serial.print("md: ");  Serial.print(mode, DEC);
+//  Serial.print(" mx: ");  Serial.println(MAX_NR_OF_MODES, DEC);
+
+  if (modeSave<MAX_NR_OF_MODES-1) {
+    //incase we are fading (mode 200) we need to use the save value
+    mode = modeSave+1;
   } else {
     mode = 0; 
   }
-
+  
+  modeSave = mode;
+  
   initMode(); 
 }
 
