@@ -32,8 +32,7 @@
 int dataPin = 2; 
 int clockPin = 3;  
 
-uint8_t DELAY = 20;
-uint8_t delayTodo = 0;
+WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 
 //*************************/
 // Network settings
@@ -43,16 +42,31 @@ byte myIp[]  = { 192, 168, 111, 222 };
 
 int serverPort  = 10000;
 byte oscCallBackWorkarround;
+OSCServer oscServer;
+
+//*************************/
+// Fader
+
+const uint8_t FADER_STEPS = 25;
+uint8_t clearColR, clearColG, clearColB;
+uint8_t oldR, oldG, oldB;
+uint8_t faderSteps;
 
 //*************************/
 // Misc
-#define MAX_NR_OF_MODES 6
 
-WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
-int ledPin =  9;
-uint8_t oscR, oscG, oscB, mode;
-OSCServer oscServer;
+#define MAX_NR_OF_MODES 8
+
+uint8_t ledPin =  9;
+uint8_t oscR, oscG, oscB;
+uint8_t mode, modeSave;
 int frames=0;
+
+//update strip after DELAY
+uint8_t DELAY = 20;
+//current delay value
+uint8_t delayTodo = 0;
+
 
 //use serail debug or not
 #define USE_SERIAL_DEBUG 1
@@ -105,7 +119,7 @@ void setup(){
 //#endif
  
  //init effect
- setupLines(false);
+ setupLines();
  
  pinMode(ledPin, OUTPUT);  
  
@@ -174,18 +188,22 @@ void loop(){
       case 0:
           loopLines();
           break;
-      case 1:  //SOLID Color White          
-      case 2:  //SOLID Color Wheel      
+      case 1:  //SOLID Color White
+      case 2:  //Color Wheel
+      case 5:  //Random Fading
           loopSolid();
           break;
       case 3:
+      case 6:
+      case 7:
           loopKnightRider();    
           break;
       case 4:
           loopRainbow();    
           break;
-      case 5:
-          loopLines();    
+      //internal mode
+      case 200:
+          faderLoop();
           break;
     }
     strip.show();    
@@ -212,7 +230,7 @@ void initMode() {
   
   switch (mode) {
     case 0:
-          setupLines(false);
+          setupLines();
           break;
     case 1:  
           setupSolid(0);
@@ -221,13 +239,19 @@ void initMode() {
           setupSolid(1);
           break;
     case 3:
-          setupKnightRider();    
+          setupKnightRider(strip.numPixels()/10, 1);    
           break;
     case 4:
           setupRainbow();    
           break;
     case 5:
-          setupLines(true);    
+          setupSolid(2);    
+          break;
+    case 6:
+          setupKnightRider(strip.numPixels()/10, 4);    
+          break;
+    case 7:
+          setupKnightRider(strip.numPixels()/20, 8);    
           break;
   }  
 
@@ -398,6 +422,17 @@ uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
   return c;
 }
 
+// get the complementary color of the current tint color
+uint32_t complementaryColor() {
+  uint32_t c;
+  c = 255-oscR;
+  c <<= 8;
+  c |= 255-oscG;
+  c <<= 8;
+  c |= 255-oscB;
+  return c;
+}
+
 
 //Input a value 0 to 255 to get a color value.
 //The colours are a transition r - g -b - back to r
@@ -411,5 +446,42 @@ uint32_t Wheel(byte WheelPos) {
     WheelPos -= 170; 
     return Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
+}
+
+//initialize a new fading from clearCol to random
+void startFadeToRandomColor(uint8_t r, uint8_t g, uint8_t b) {
+  //save current color
+  oldR = clearColR;
+  oldG = clearColG;
+  oldB = clearColB;
+
+  //define new color
+  clearColR = random(r);
+  clearColG = random(g);
+  clearColB = random(b);
+  
+  modeSave = mode;
+  mode = 200;  
+  faderSteps = 0;
+}
+
+//fade currentbackground color to next, random color
+void faderLoop() {
+    float stepsR = (clearColR-oldR)/(float)FADER_STEPS;
+    float stepsG = (clearColG-oldG)/(float)FADER_STEPS;
+    float stepsB = (clearColB-oldB)/(float)FADER_STEPS;
+
+    uint8_t rr=oldR+stepsR*faderSteps;    
+    uint8_t gg=oldG+stepsG*faderSteps;
+    uint8_t bb=oldB+stepsB*faderSteps;
+    uint32_t c = Color(rr, gg, bb);
+    
+    for (int i=0; i < strip.numPixels(); i++) {
+      setTintPixelColor(i, c);
+    }
+    
+    if (faderSteps++>FADER_STEPS) {
+      mode = modeSave;
+    }    
 }
 

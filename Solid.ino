@@ -11,15 +11,25 @@ void setupSolid(uint8_t _mode) {
 }
 
 void loopSolid() {
-  for (int i=0; i < strip.numPixels(); i++) {
+  
     switch (solidmode) {
       case 0:
-          setTintPixelColor(i, WHITE_COLOR);
+          fillAllPixelWith(WHITE_COLOR);
           break;
       case 1:
-          setTintPixelColor(i, Wheel(frames%255));
+          fillAllPixelWith(Wheel(frames%255));
+          break;
+      case 2:
+          //we get back to this fx AFTER the whole fading is done!
+          startFadeToRandomColor(random(255), random(255), random(255));
           break;
     }      
+
+}
+
+void fillAllPixelWith(uint32_t col) {
+  for (int i=0; i < strip.numPixels(); i++) {
+     setTintPixelColor(i, col);
   }
 }
 

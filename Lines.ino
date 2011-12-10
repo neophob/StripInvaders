@@ -2,9 +2,6 @@
 //
 //Fancy lines effects
 
-const uint8_t FADER_STEPS = 25;
-int andMask[3];
-
 struct line {
   uint8_t ofs;
   uint8_t pos;
@@ -14,30 +11,18 @@ struct line {
 };
 line lines;
 
-uint8_t clearColR;
-uint8_t clearColG;
-uint8_t clearColB;
-uint32_t clearCol;
 
 //init effect
-void setupLines(boolean fancyMode) {
-  if (fancyMode) {
-    andMask[0] = 0x0000ff; 
-    andMask[1] = 0x00ff00;
-    andMask[2] = 0xff0000;
-  } else {
-    andMask[0] = 0xffffff;
-    andMask[1] = 0xffffff;
-    andMask[2] = 0xffffff;    
-  }
+void setupLines() {
   newAnimation(); 
 }
 
 //main loop
 void loopLines() {
   if ((lines.pos > 0 && lines.pos == lines.del) || lines.pos > strip.numPixels()) {
-    fadeToNewColor();
+    startFadeToRandomColor(128, 128, 128);
     newAnimation();
+    return;
   }
   
   if (lines.pos > lines.length) {
@@ -45,12 +30,13 @@ void loopLines() {
   } else {
     lines.pos++;      
   }
-    
+   
+  uint32_t clearCol = Color(clearColR, clearColG, clearColB); 
   for (int i=0; i < strip.numPixels(); i++) {
     if (i>=lines.ofs+lines.del && i<lines.ofs+lines.pos) {
-      setTintPixelColor(i, lines.col & andMask[i%3]);
+      setTintPixelColor(i, lines.col);
     } else {
-      setTintPixelColor(i, clearCol & andMask[i%3]);
+      setTintPixelColor(i, clearCol);
     }      
   }  
 }
@@ -65,37 +51,7 @@ void newAnimation() {
   }
   lines.pos = 0;
   lines.del = 0;
-  lines.col = Color(random(200), random(200), random(250));  
+  lines.col = Color(random(220), random(220), random(255));  
 }
 
 
-//fade currentbackground color to next, random color
-void fadeToNewColor() {
-  uint8_t oldR = clearColR;
-  uint8_t oldG = clearColG;
-  uint8_t oldB = clearColB;
-
-  clearColR = random(70);
-  clearColG = random(70);
-  clearColB = random(90);
-  clearCol = Color(clearColR, clearColG, clearColB);
-  
-  float stepsR = (clearColR-oldR)/(float)FADER_STEPS;
-  float stepsG = (clearColG-oldG)/(float)FADER_STEPS;
-  float stepsB = (clearColB-oldB)/(float)FADER_STEPS;
-
-  for (uint8_t s=0; s<FADER_STEPS+1; s++) {
-    uint8_t rr=oldR+stepsR*s;    
-    uint8_t gg=oldG+stepsG*s;
-    uint8_t bb=oldB+stepsB*s;
-    uint32_t c = Color(rr, gg, bb);
-    
-    for (int i=0; i < strip.numPixels(); i++) {
-      setTintPixelColor(i, c & andMask[i%3]);
-    }
-    
-    strip.show(); 
-    delay(DELAY);      
-  }
-  
-}
