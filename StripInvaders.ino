@@ -55,7 +55,7 @@ uint8_t faderSteps;
 //*************************/
 // Misc
 
-#define MAX_NR_OF_MODES 8
+#define MAX_NR_OF_MODES 9
 #define MAX_SLEEP_TIME 160.0f
 
 uint8_t ledPin =  9;
@@ -202,6 +202,9 @@ void loop(){
       case 7:
           loopKnightRider();    
           break;
+      case 8:
+          loopFader();
+          break;
       //internal mode
       case 200:
           faderLoop();
@@ -254,6 +257,10 @@ void initMode() {
     case 7:
           setupKnightRider(2, 8);    
           break;
+    case 8:
+          setupFader();
+          break;
+          
   }  
 
   synchronousBlink();
@@ -356,6 +363,8 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
   }
 
   mode=arg;
+  modeSave = mode;
+
   initMode(); 
 }
 
@@ -490,5 +499,21 @@ void faderLoop() {
     if (faderSteps++>=FADER_STEPS) {
       mode = modeSave;
     }    
+}
+
+//fade currentbackground color to next, random color
+void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2) {
+    float stepsR = (r2-r)/(float)strip.numPixels();
+    float stepsG = (g2-g)/(float)strip.numPixels();
+    float stepsB = (b2-b)/(float)strip.numPixels();
+
+    for (int i=0; i < strip.numPixels(); i++) {
+      uint8_t rr=r+stepsR*i;
+      uint8_t gg=g+stepsG*i;
+      uint8_t bb=b+stepsB*i;
+
+      setTintPixelColor(i, Color(rr, gg, bb));
+    }
+    
 }
 

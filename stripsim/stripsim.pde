@@ -16,13 +16,13 @@ int clearCol;
 /*
 EFFECT VARIABLES HERE
 */
-int krSize = 16;
+int krSize = 4;
 int kr=0;
 int krDirection=0;
 color col;
 
-int pixelsPerBlock = 20;
-int blockSize = 8;
+int pixelsPerBlock = 10;
+int blockSize = 16;
 int xxx=0;
 
 void setup(){
@@ -74,20 +74,18 @@ color c2=Wheel(255-a);
     led[x] = Wheel(frame%255);//color(255,255,255);
   }  */
   
-//KNIGHT RIDER
-if (frame%10==0) {
-r=int(random(255));
-g=int(random(255));
-b=int(random(255));
-c_=color(255-r,255-g,255-b);
-
-}
-for (int i=0; i < LEDS; i++) {
-    led[i] = color(r,g,b);//color(255,128,0);
-  }
-  
-    drawKR(4,c_);
 /**/
+
+    float stepsR = (255)/(float)LEDS;
+    float stepsG = (255)/(float)LEDS;
+    float stepsB = (255)/(float)LEDS;
+    
+    for (int i=0; i < LEDS; i++) {
+      int rr=int(stepsR*i);
+      int gg=int(stepsG*i);
+      int bb=int(stepsB*i);
+      led[i] = color(rr,gg,bb);
+    }
 
 /* EFFECT END HERE */
 

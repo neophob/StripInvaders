@@ -36,14 +36,14 @@ void loopAudioSensor() {
     maxVal--; 
   }
   
-
+/*
 #ifdef USE_SERIAL_DEBUG
   Serial.print("avg:");
   Serial.print(average, DEC);
   Serial.print("  \tav:");
   Serial.println(audioVol, DEC);
 #endif
-
+*/
 }
 
 #endif
