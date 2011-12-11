@@ -76,16 +76,7 @@ color c2=Wheel(255-a);
   
 /**/
 
-    float stepsR = (255)/(float)LEDS;
-    float stepsG = (255)/(float)LEDS;
-    float stepsB = (255)/(float)LEDS;
-    
-    for (int i=0; i < LEDS; i++) {
-      int rr=int(stepsR*i);
-      int gg=int(stepsG*i);
-      int bb=int(stepsB*i);
-      led[i] = color(rr,gg,bb);
-    }
+  faderTo(int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)));  
 
 /* EFFECT END HERE */
 
@@ -142,6 +133,20 @@ color Wheel(int WheelPos) {
   }
 }
 
+void faderTo(int r, int g, int b, int r2, int g2, int b2) {
+    float stepsR = (r2-r)/float(LEDS);
+    float stepsG = (g2-g)/float(LEDS);
+    float stepsB = (b2-b)/float(LEDS);
+
+    for (int i=0; i < LEDS; i++) {
+      int rr=int(r+stepsR*i);
+      int gg=int(g+stepsG*i);
+      int bb=int(b+stepsB*i);
+
+      led[i] = color(rr, gg, bb);
+    }
+    Sleep(111);
+}
 
 void fadeToNewColor(int r, int g, int b) {
   int oldR = clearColR;
