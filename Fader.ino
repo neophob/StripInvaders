@@ -20,7 +20,7 @@ uint8_t update(uint8_t val, int8_t add) {
 
 
 void loopFader() {
-  int8_t rnd = random(21)-10;
+  int8_t rnd = random(31)-15;
   
   switch (random(6)) {
     case 0:
@@ -42,6 +42,6 @@ void loopFader() {
           b2 = update(b2,rnd);
           break; 
   }
-  
+    
   faderTo(r, g, b, r2, g2, b2);
 }
