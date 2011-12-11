@@ -37,46 +37,26 @@ color c_;
 void draw() {
 
 /* EFFECT START HERE */  
-  /*
-if (xxx>pixelsPerBlock) xxx=0;
-int ofs=0;
-int a = frame%255;
-color c1=Wheel(a);
-color c2=Wheel(255-a);
 
-  for (int x=0; x<blockSize; x++) {
-    for (int i=0; i<pixelsPerBlock; i++) {
-
-      if (i>xxx) {
-        led[ofs++] = c1;
-      } else {
-        led[ofs++] = c2;
-      }
-
-    }
-  }
-  xxx++;*/
   
 //BLOCK
-/*  int ofs=0;
-  for (int x=0; x<blockSize; x++) {
-    color cc = Harmony((frame+x<<2)%255);
+  int ofs=kr*pixelsPerBlock;
+//  for (int x=0; x<blockSize; x++) {
+    color cc = Wheel((frame+kr)%255);
     for (int i=0; i<pixelsPerBlock; i++) {
       led[ofs++] = cc;
     }
-  }/**/
 
+    if (frame % 8==0) updateKR(blockSize);
+    //xxx++;
+    
+//    if (xxx>=blockSize) xxx=0;
+//  }/**/
 
-//fadeToNewColor(int(random(255)), int(random(255)), int(random(255)));
-
-//SOLID  
-/*  for (int x=0; x < LEDS; x++) {
-    led[x] = Wheel(frame%255);//color(255,255,255);
-  }  */
   
 /**/
 
-  faderTo(int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)));  
+ // faderTo(int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)), int(random(255)));  
 
 /* EFFECT END HERE */
 
@@ -133,19 +113,19 @@ color Wheel(int WheelPos) {
   }
 }
 
-void faderTo(int r, int g, int b, int r2, int g2, int b2) {
+void faderTo(int s, int e, int r, int g, int b, int r2, int g2, int b2) {
     float stepsR = (r2-r)/float(LEDS);
     float stepsG = (g2-g)/float(LEDS);
     float stepsB = (b2-b)/float(LEDS);
 
-    for (int i=0; i < LEDS; i++) {
+    for (int i=s; i < e; i++) {
       int rr=int(r+stepsR*i);
       int gg=int(g+stepsG*i);
       int bb=int(b+stepsB*i);
 
       led[i] = color(rr, gg, bb);
     }
-    Sleep(111);
+    delay(111);
 }
 
 void fadeToNewColor(int r, int g, int b) {

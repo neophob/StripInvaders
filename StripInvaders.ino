@@ -32,6 +32,7 @@
 int dataPin = 2; 
 int clockPin = 3;  
 
+//TODO maybe add swap data/clk option to lib?
 WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 
 //*************************/
@@ -55,7 +56,7 @@ uint8_t faderSteps;
 //*************************/
 // Misc
 
-#define MAX_NR_OF_MODES 9
+#define MAX_NR_OF_MODES 10
 #define MAX_SLEEP_TIME 160.0f
 
 uint8_t ledPin =  9;
@@ -200,9 +201,10 @@ void loop(){
       case 5: //1 slider
       case 6:
       case 7:
+      case 8:
           loopKnightRider();    
           break;
-      case 8:
+      case 9:
           loopFader();
           break;
       //internal mode
@@ -217,7 +219,6 @@ void loop(){
   if (oscCallBackWorkarround>0) {
     oscCallBackWorkarround--;
   }
-  
 }
 
 //just blink
@@ -226,6 +227,22 @@ void synchronousBlink() {
   delay(20);
   digitalWrite(ledPin, LOW);  
 }
+
+//press enter on the serial port switch the mode, used for debugging
+#ifdef USE_SERIAL_DEBUG 
+void serialEvent() {
+  while (Serial.available()) {
+  // get the new byte:
+  char inChar = (char)Serial.read(); 
+//  Serial.println(inChar, HEX);
+  if (inChar == 0x6d) { //if user pressed 'M'
+      increaseMode();
+      Serial.println();
+    } 
+  }
+}
+#endif 
+
 
 void initMode() {
 #ifdef USE_SERIAL_DEBUG
@@ -249,15 +266,18 @@ void initMode() {
           setupRainbow();    
           break;
     case 5:
-          setupKnightRider(strip.numPixels()/10, 1);    
+          setupKnightRider(strip.numPixels()/10, 1, 0);    
           break;
     case 6:
-          setupKnightRider(strip.numPixels()/10, 4);    
+          setupKnightRider(strip.numPixels()/10, 4, 0);    
           break;
     case 7:
-          setupKnightRider(2, 8);    
+          setupKnightRider(2, 8, 0);    
           break;
     case 8:
+          setupKnightRider(1, 0, 1);    
+          break;
+    case 9:
           setupFader();
           break;
           
@@ -364,10 +384,20 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
 
   mode=arg;
   modeSave = mode;
-
   initMode(); 
 }
 
+void increaseMode() {
+  if (modeSave<MAX_NR_OF_MODES-1) {
+    //incase we are fading (mode 200) we need to use the save value
+    mode = modeSave+1;
+  } else {
+    mode = 0; 
+  }
+  
+  modeSave = mode;  
+  initMode();   
+}
 
 // change mode, just increase current mode
 void oscCallbackChangeMode(OSCMessage *_mes){
@@ -378,20 +408,8 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   if (arg == 0) {
     return;
   }
-  
-//  Serial.print("md: ");  Serial.print(mode, DEC);
-//  Serial.print(" mx: ");  Serial.println(MAX_NR_OF_MODES, DEC);
-
-  if (modeSave<MAX_NR_OF_MODES-1) {
-    //incase we are fading (mode 200) we need to use the save value
-    mode = modeSave+1;
-  } else {
-    mode = 0; 
-  }
-  
-  modeSave = mode;
-  
-  initMode(); 
+ 
+  increaseMode(); 
 }
 
 //*************************/
