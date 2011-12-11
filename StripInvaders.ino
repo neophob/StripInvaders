@@ -33,8 +33,8 @@
 int dataPin = 2; 
 int clockPin = 3;  
 
-//TODO maybe add swap data/clk option to lib?
-WS2801 strip = WS2801(0);
+//dummy init the ws2801 lib
+WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
 
 //*************************/
 // Network settings
@@ -110,10 +110,7 @@ void setup(){
   Serial.println("SWP");
 #endif
    //swapped start
-   strip = WS2801(NR_OF_PIXELS, clockPin, dataPin);
- } else {
-   //regular start
-   strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
+   strip.updatePins(clockPin, dataPin);
  }
  
  Ethernet.begin(myMac ,myIp); 
@@ -581,6 +578,6 @@ void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2
 //Serial.print(" ");
       setTintPixelColor(i, Color(rr, gg, bb));
     }
-Serial.println();    
+//Serial.println();    
 }
 
