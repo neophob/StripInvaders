@@ -10,7 +10,7 @@
 #include <ArdOSC.h>
 #include "WS2801.h"
 #include <EthernetBonjour.h>
-
+#include <EEPROM.h>
 
 //*************************/
 // OSC Stuff
@@ -21,6 +21,7 @@
 #define OSC_MSG_CHANGE_MODE "/mode"
 #define OSC_MSG_CHANGE_MODE_DIRECT "/modd"
 #define OSC_MSG_AUDIO "/audio"
+#define OSC_MSG_SWAP_CABELING "/swp"
 
 //*************************/
 // WS2801
@@ -33,7 +34,7 @@ int dataPin = 2;
 int clockPin = 3;  
 
 //TODO maybe add swap data/clk option to lib?
-WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
+WS2801 strip = WS2801(0);
 
 //*************************/
 // Network settings
@@ -103,6 +104,18 @@ void setup(){
   Serial.println("INVDR!");
 #endif
 
+ byte swapCables = EEPROM.read(0);
+ if (swapCables == 66) {
+#ifdef USE_SERIAL_DEBUG
+  Serial.println("SWP");
+#endif
+   //swapped start
+   strip = WS2801(NR_OF_PIXELS, clockPin, dataPin);
+ } else {
+   //regular start
+   strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
+ }
+ 
  Ethernet.begin(myMac ,myIp); 
  
  oscServer.begin(serverPort);
@@ -114,6 +127,7 @@ void setup(){
  oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
  oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
  oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
+ oscServer.addCallback(OSC_MSG_SWAP_CABELING, &oscCallbackSwapCabeling);
 
 //#ifdef USE_AUDIO_INPUT
  Serial.println("AU");
@@ -412,6 +426,25 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   increaseMode(); 
 }
 
+//Swap
+void oscCallbackSwapCabeling(OSCMessage *_mes){
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
+  byte swapCables = EEPROM.read(0);
+  byte mark = 0;
+  if (swapCables != 66) {
+    mark = 66;
+  }
+  EEPROM.write(0, mark);
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("s:");
+  Serial.println(mark, DEC);
+#endif  
+
+}
+
 //*************************/
 // Helper Functions
 
@@ -521,17 +554,33 @@ void faderLoop() {
 
 //fade currentbackground color to next, random color
 void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2) {
+/*  
+  Serial.print("fTO: ");
+  Serial.print(r, DEC);
+  Serial.print(" ");
+  Serial.print(g, DEC);
+  Serial.print(" ");
+  Serial.print(b, DEC);
+  Serial.print(" / ");
+  Serial.print(r2, DEC);
+  Serial.print(" ");
+  Serial.print(g2, DEC);
+  Serial.print(" ");
+  Serial.println(b2, DEC);
+*/
     float stepsR = (r2-r)/(float)strip.numPixels();
     float stepsG = (g2-g)/(float)strip.numPixels();
     float stepsB = (b2-b)/(float)strip.numPixels();
 
     for (int i=0; i < strip.numPixels(); i++) {
-      uint8_t rr=r+stepsR*i;
-      uint8_t gg=g+stepsG*i;
-      uint8_t bb=b+stepsB*i;
-
+      uint8_t rr=stepsR*i;
+      uint8_t gg=stepsG*i;
+      uint8_t bb=stepsB*i;
+//Serial.print(" ");
+//Serial.print(rr, DEC);
+//Serial.print(" ");
       setTintPixelColor(i, Color(rr, gg, bb));
     }
-    
+Serial.println();    
 }
 

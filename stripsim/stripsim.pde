@@ -37,10 +37,10 @@ color c_;
 void draw() {
 
 /* EFFECT START HERE */  
-
+rainbowCycle(2);
   
 //BLOCK
-  int ofs=kr*pixelsPerBlock;
+/*  int ofs=kr*pixelsPerBlock;
 //  for (int x=0; x<blockSize; x++) {
     color cc = Wheel((frame+kr)%255);
     for (int i=0; i<pixelsPerBlock; i++) {
@@ -96,6 +96,28 @@ void updateKR(int lengthOfStrip) {
    krDirection = 0;
    kr = 0; 
   }    
+}
+
+
+void rainbowCycle(int wait) {
+  int i, j;
+  
+  for (j=0; j < 256 * 5; j++) {     // 5 cycles of all 25 colors in the wheel
+    for (i=0; i < LEDS; i++) {
+      // tricky math! we use each pixel as a fraction of the full 96-color wheel
+      // (thats the i / strip.numPixels() part)
+      // Then add in j which makes the colors go around per pixel
+      // the % 96 is to make the wheel cycle around
+      led[i] = Wheel( ((i * 256 / LEDS) + j) % 256);
+    }  
+    
+    for (int x=0; x<LEDS; x++) {
+      fill(color(led[x]));
+      rect(x*(LEDSIZE+1), 10, LEDSIZE, LEDSIZE*3);
+    }
+
+    delay(wait);
+  }
 }
 
 
