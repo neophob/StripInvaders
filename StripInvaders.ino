@@ -364,8 +364,9 @@ void oscCallbackAudio(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  uint8_t arg=_mes->getArgInt32(0) && 0xff;
-  if (arg == 0) {
+  //uint8_t arg=_mes->getArgInt32(0) && 0xff;
+  float arg=_mes->getArgFloat(0);
+  if (arg < 1.f) {
     return;
   }
 
@@ -388,7 +389,8 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  //uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  byte arg=byte(_mes->getArgFloat(0));
   if (arg > MAX_NR_OF_MODES-1) {
     return;
   }
@@ -415,15 +417,17 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  uint8_t arg=_mes->getArgInt32(0) & 0xff;
-  if (arg == 0) {
+  //touchOSC send float! int does NOT work
+//  uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  float arg=_mes->getArgFloat(0);
+  if (arg < 1.f) {
     return;
   }
  
   increaseMode(); 
 }
 
-//Swap
+//Swap cabling and store to eeprom
 void oscCallbackSwapCabeling(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
@@ -551,7 +555,7 @@ void faderLoop() {
 
 //fade currentbackground color to next, random color
 void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2) {
-/*  
+
   Serial.print("fTO: ");
   Serial.print(r, DEC);
   Serial.print(" ");
@@ -564,20 +568,20 @@ void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2
   Serial.print(g2, DEC);
   Serial.print(" ");
   Serial.println(b2, DEC);
-*/
-    float stepsR = (r2-r)/(float)strip.numPixels();
-    float stepsG = (g2-g)/(float)strip.numPixels();
-    float stepsB = (b2-b)/(float)strip.numPixels();
+
+    float stepsR = (r2-r)/(float)(strip.numPixels()-1);
+    float stepsG = (g2-g)/(float)(strip.numPixels()-1);
+    float stepsB = (b2-b)/(float)(strip.numPixels()-1);
 
     for (int i=0; i < strip.numPixels(); i++) {
-      uint8_t rr=stepsR*i;
-      uint8_t gg=stepsG*i;
-      uint8_t bb=stepsB*i;
-//Serial.print(" ");
-//Serial.print(rr, DEC);
-//Serial.print(" ");
+      uint8_t rr=r+stepsR*i;
+      uint8_t gg=g+stepsG*i;
+      uint8_t bb=b+stepsB*i;
+Serial.print(" ");
+Serial.print(rr, DEC);
+Serial.print(" ");
       setTintPixelColor(i, Color(rr, gg, bb));
     }
-//Serial.println();    
+Serial.println();    
 }
 

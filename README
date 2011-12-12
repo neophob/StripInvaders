@@ -7,7 +7,7 @@ Name:	Type:	Range:	Descr:
 /knbg	float	0..1	G Color Vale
 /knbb	float	0..1	B Color Vale
 /delay	float	0..1	Delay Value
-/mode	int	0..1	if mode = 1, switch to next effect
-/modd   int     0..n    change to effect x
+/mode	float	0..1	if mode = 1, switch to next effect
+/modd   float   0..n    change to effect x
 /swp            trigger swap data/clk line, this change is stored in the eeprom
 
