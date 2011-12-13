@@ -130,24 +130,29 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  byte swapCables = EEPROM.read(0);
-  byte mark = 0;
-  if (swapCables != 66) {
-    mark = 66;
-  }
-  EEPROM.write(0, mark);
-
-#ifdef USE_SERIAL_DEBUG
-  Serial.print("s:");
-  Serial.println(mark, DEC);
-#endif  
+  int magicByte = _mes->getArgInt32(0);
+  int dataPin = _mes->getArgInt32(1);
+  int clkPin = _mes->getArgInt32(2);
   
-  //just to be sure
-  delay(250);
-  synchronousBlink();
-  delay(50);
-  synchronousBlink();
+  //66 is just a magic nr.
+  if (magicByte == 66) {
+    EEPROM.write(0, 'I');
+    EEPROM.write(1, 'N');
+    EEPROM.write(2, 'V');
+    EEPROM.write(3, dataPin);
+    EEPROM.write(4, clkPin);
+    
+#ifdef USE_SERIAL_DEBUG
+  Serial.println("RBT");
+#endif  
+    //just to be sure
+    delay(250);
+    synchronousBlink();
+    delay(50);
+    synchronousBlink();
 
-  resetFunc();  //call reset
+    resetFunc();  //call reset    
+  }
+    
 }
 

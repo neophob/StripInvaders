@@ -107,15 +107,24 @@ void setup(){
   Serial.println("INVDR!");
 #endif
 
- //
- byte swapCables = EEPROM.read(0);
- if (swapCables == 66) {
-#ifdef USE_SERIAL_DEBUG
-  Serial.println("SWP");
-#endif
-   //swapped start
+ //check if data/clk port is stored in the eeprom. First check for header INV
+ int header1 = EEPROM.read(0);
+ int header2 = EEPROM.read(1);
+ int header3 = EEPROM.read(2);
+ 
+ if (header1 == 'I' && header2 == 'N' && header3 == 'V') {
+   //read data and clk pin from the eeprom
+   dataPin = EEPROM.read(3);
+   clockPin = EEPROM.read(4);
    strip.updatePins(clockPin, dataPin);
  }
+ 
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("PIN D:");
+  Serial.print(dataPin, DEC);
+  Serial.print(" C:");
+  Serial.println(clockPin, DEC);
+#endif
  
  Ethernet.begin(myMac ,myIp); 
  
@@ -160,9 +169,10 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  EthernetBonjour.addServiceRecord("Invader._osc",
-                                   10000,
-                                   MDNSServiceUDP);  
+  int ret = EthernetBonjour.addServiceRecord("Invader._osc", 10000, MDNSServiceUDP);  
+  if (ret==0) {
+    //error, bonjour service failed
+  }
 }
 
 /*****************************************************************************************
