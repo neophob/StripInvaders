@@ -28,6 +28,7 @@ void oscCallbackR(OSCMessage *_mes){
 #endif 
 }
 
+
 // G
 void oscCallbackG(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
@@ -40,6 +41,7 @@ void oscCallbackG(OSCMessage *_mes){
   Serial.println(oscG, DEC);
 #endif
 }
+
 
 // B
 void oscCallbackB(OSCMessage *_mes){
@@ -54,19 +56,16 @@ void oscCallbackB(OSCMessage *_mes){
 #endif  
 }
 
+
 #ifdef USE_AUDIO_INPUT  
 // AUDIO
 void oscCallbackAudio(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  //uint8_t arg=_mes->getArgInt32(0) && 0xff;
+  //toggle button
   float arg=_mes->getArgFloat(0);
-  if (arg < 1.f) {
-    return;
-  }
-
-  if (isAudioVolumeEnabled) {
+  if (arg==0.0f) {
     isAudioVolumeEnabled = false;
   } else {
     isAudioVolumeEnabled = true;
@@ -85,8 +84,7 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
-  //uint8_t arg=_mes->getArgInt32(0) & 0xff;
-  byte arg=byte(_mes->getArgFloat(0));
+  byte arg=byte(_mes->getArgFloat(0));  
   if (arg > MAX_NR_OF_MODES-1) {
     return;
   }
@@ -96,6 +94,8 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
   initMode(); 
 }
 
+
+// next mode
 void increaseMode() {
   if (modeSave<MAX_NR_OF_MODES-1) {
     //incase we are fading (mode 200) we need to use the save value
@@ -107,6 +107,7 @@ void increaseMode() {
   modeSave = mode;  
   initMode();   
 }
+
 
 // change mode, just increase current mode
 void oscCallbackChangeMode(OSCMessage *_mes){
@@ -122,6 +123,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
  
   increaseMode(); 
 }
+
 
 //Swap cabling of ws2801 strips and store config into eeprom
 void oscCallbackSwapCabeling(OSCMessage *_mes){

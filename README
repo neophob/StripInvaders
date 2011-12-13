@@ -3,12 +3,12 @@ StripInvaders
 
 OSC Messages:
 Name:   Type:   Range:   Descr:
-/knbr   float	  0..1	   R Color Vale
-/knbg   float	  0..1	   G Color Vale
-/knbb   float	  0..1	   B Color Vale
-/delay  float	  0..1     Delay Value
-/audio  float   0..1     Enable audio sync
-/mode   float	  0..1     if mode = 1, switch to next effect
+/knbr   float   0..1     R Color Vale
+/knbg   float   0..1     G Color Vale
+/knbb   float   0..1     B Color Vale
+/delay  float   0..1     Delay Value
+/audio  float   0..1     Enable audio sync (toggle button)
+/mode   float   0..1     if mode = 1, switch to next effect
 /modd   float   0..n     direct change to effect x
 /swp            trigger  swap data/clk line, this change is stored in the eeprom
 

@@ -1,34 +1,37 @@
-#N canvas 602 22 639 622 10;
-#X obj 126 412 cnv 15 100 40 empty empty empty 20 12 0 14 -4034 -66577
+#N canvas 415 41 828 644 10;
+#X obj 321 446 cnv 15 100 40 empty empty empty 20 12 0 14 -4034 -66577
 0;
-#X msg 140 503 disconnect;
-#X floatatom 193 458 5 0 0 0 - - -;
-#X msg -78 435 connect 192.168.111.222 10000;
-#X obj 165 10 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
+#X msg 335 537 disconnect;
+#X floatatom 388 492 5 0 0 0 - - -;
+#X msg 65 515 connect 192.168.111.222 10000;
+#X obj 360 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
 -1 -1 0 1;
-#X obj 200 10 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
+#X obj 395 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
 -1 -1 0 1;
-#X obj 238 10 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
+#X obj 433 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
 -1 -1 0 1;
-#X msg 158 249 sendtyped /knbg f \$1;
-#X msg 74 185 sendtyped /knbr f \$1;
-#X msg 283 202 sendtyped /knbb f \$1;
-#X obj 74 162 pack f;
-#X obj 158 226 pack f;
-#X obj 283 179 pack f;
-#X obj 434 149 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
--1 -1 0 1;
-#X obj 369 311 pack f;
-#X msg 369 341 sendtyped /delay f \$1;
-#X obj 121 542 mrpeach/udpsend;
-#X obj 129 424 mrpeach/packOSC;
-#X msg -68 405 connect 10.0.1.111 10000;
-#X msg 17 225 /swp;
-#X obj -53 44 unpackOSC;
-#X obj -53 13 udpreceive 10000;
-#X obj -49 88 print;
-#X msg -105 322 sendtyped /mode f 1;
-#X msg -102 270 sendtyped /modd f 6;
+#X msg 353 283 sendtyped /knbg f \$1;
+#X msg 269 219 sendtyped /knbr f \$1;
+#X msg 478 236 sendtyped /knbb f \$1;
+#X obj 269 196 pack f;
+#X obj 353 260 pack f;
+#X obj 478 213 pack f;
+#X obj 629 183 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
+-1 -1 12700 1;
+#X obj 564 345 pack f;
+#X msg 564 375 sendtyped /delay f \$1;
+#X obj 316 576 mrpeach/udpsend;
+#X obj 324 458 mrpeach/packOSC;
+#X msg 75 485 connect 10.0.1.111 10000;
+#X msg 145 276 /swp;
+#X obj 142 109 print;
+#X msg -36 380 sendtyped /mode f 1;
+#X msg 9 329 sendtyped /modd f 6;
+#X msg 171 239 /audio 1;
+#X msg 201 269 /audio 0;
+#X obj 142 47 mrpeach/udpreceive 10000;
+#X obj 142 78 mrpeach/unpackOSC;
+#X msg 19 309 sendtyped /modd i 6;
 #X connect 1 0 16 0;
 #X connect 3 0 16 0;
 #X connect 4 0 10 0;
@@ -47,7 +50,10 @@
 #X connect 17 1 2 0;
 #X connect 18 0 16 0;
 #X connect 19 0 17 0;
-#X connect 20 0 22 0;
-#X connect 21 0 20 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 0;
 #X connect 23 0 17 0;
 #X connect 24 0 17 0;
+#X connect 25 0 26 0;
+#X connect 26 0 20 0;
+#X connect 27 0 17 0;
