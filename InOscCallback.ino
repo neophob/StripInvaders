@@ -96,3 +96,52 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
   initMode(); 
 }
 
+void increaseMode() {
+  if (modeSave<MAX_NR_OF_MODES-1) {
+    //incase we are fading (mode 200) we need to use the save value
+    mode = modeSave+1;
+  } else {
+    mode = 0; 
+  }
+  
+  modeSave = mode;  
+  initMode();   
+}
+
+// change mode, just increase current mode
+void oscCallbackChangeMode(OSCMessage *_mes){
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+
+  //touchOSC send float! int does NOT work
+//  uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  float arg=_mes->getArgFloat(0);
+  if (arg < 1.f) {
+    return;
+  }
+ 
+  increaseMode(); 
+}
+
+//Swap cabling of ws2801 strips and store config into eeprom
+void oscCallbackSwapCabeling(OSCMessage *_mes){
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+  
+  byte swapCables = EEPROM.read(0);
+  byte mark = 0;
+  if (swapCables != 66) {
+    mark = 66;
+  }
+  EEPROM.write(0, mark);
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.print("s:");
+  Serial.println(mark, DEC);
+#endif  
+  
+  //just to be sure
+  delay(250);
+  resetFunc();  //call reset
+}
+
