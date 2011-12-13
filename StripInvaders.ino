@@ -24,6 +24,21 @@
 #define OSC_MSG_SWAP_CABELING "/swp"
 
 //*************************/
+// Defines
+
+//use serail debug or not
+#define USE_SERIAL_DEBUG 1
+
+//use serail debug or not
+#define USE_DHCP 1
+
+//uncomment it to enable audio
+//#define USE_AUDIO_INPUT 1
+
+//some common color defines
+const uint32_t WHITE_COLOR = 0xffffff;
+
+//*************************/
 // WS2801
 //how many pixels, I use 32 pixels/m
 #define NR_OF_PIXELS 160
@@ -38,9 +53,13 @@ WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin);
 
 //*************************/
 // Network settings
-byte myMac[] = { 0xAF, 0xFE, 0x00, 0xBE, 0x00, 0x01 };
-byte myIp[]  = { 192, 168, 111, 222 };
-//byte myIp[4]  = { 10, 0, 1, 111 };
+
+#ifndef USE_DHCP
+  byte myIp[]  = { 192, 168, 1, 111 };
+#endif
+
+byte myMac[] = { 0x00, 0x00, 0xAF, 0xFE, 0xBE, 0x01 };
+
 
 int serverPort  = 10000;
 byte oscCallBackWorkarround;
@@ -65,20 +84,14 @@ uint8_t oscR, oscG, oscB;
 uint8_t mode, modeSave;
 int frames=0;
 
+const byte CONST_I = 'I';
+const byte CONST_N = 'N';
+const byte CONST_V = 'V';
+
 //update strip after DELAY
 uint8_t DELAY = 20;
 //current delay value
 uint8_t delayTodo = 0;
-
-
-//use serail debug or not
-#define USE_SERIAL_DEBUG 1
-
-//uncomment it to enable audio
-#define USE_AUDIO_INPUT 1
-
-//some common color defines
-const uint32_t WHITE_COLOR = 0xffffff;
 
 //*************************/
 // Audio input
@@ -104,15 +117,15 @@ void setup(){
 
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
-  Serial.println("INVDR!");
+  Serial.println("INV!");
 #endif
 
- //check if data/clk port is stored in the eeprom. First check for header INV
+ //check if data/clk port is stored in the eeprom. First check for header INV 
  int header1 = EEPROM.read(0);
  int header2 = EEPROM.read(1);
  int header3 = EEPROM.read(2);
  
- if (header1 == 'I' && header2 == 'N' && header3 == 'V') {
+ if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
    //read data and clk pin from the eeprom
    dataPin = EEPROM.read(3);
    clockPin = EEPROM.read(4);
@@ -120,14 +133,36 @@ void setup(){
  }
  
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("PIN D:");
+  Serial.print("D:");
   Serial.print(dataPin, DEC);
   Serial.print(" C:");
   Serial.println(clockPin, DEC);
 #endif
  
- Ethernet.begin(myMac ,myIp); 
- 
+//DHCP, hint: we cannot use DHCP and manual IP together, out of space!
+#ifdef USE_DHCP
+ //start Ethernet library using dhcp
+ if (Ethernet.begin(myMac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // no point in carrying on, so do nothing forevermore:
+    for(;;)
+      ;
+  }
+#else
+//Manual IP
+  Ethernet.begin(myMac, myIp)
+#endif
+
+#ifdef USE_SERIAL_DEBUG 
+  Serial.print("IP:");////32818
+  for (byte thisByte = 0; thisByte < 4; thisByte++) {
+    // print the value of each byte of the IP address:
+    Serial.print(Ethernet.localIP()[thisByte], DEC);
+    Serial.print("."); 
+  }
+  Serial.println();
+#endif
+
  oscServer.begin(serverPort);
  
  //set callback function
@@ -139,10 +174,10 @@ void setup(){
  oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
  oscServer.addCallback(OSC_MSG_SWAP_CABELING, &oscCallbackSwapCabeling);
 
-//#ifdef USE_AUDIO_INPUT
+#ifdef USE_AUDIO_INPUT
  Serial.println("AU");
  oscServer.addCallback(OSC_MSG_AUDIO, &oscCallbackAudio); //PARAMETER: 1, int value 0..1
-//#endif
+#endif
  
  //init effect
  setupLines();
@@ -237,9 +272,6 @@ void loop(){
 }
 
 void initMode() {
-#ifdef USE_SERIAL_DEBUG
-  Serial.print("SP ");
-#endif  
   
   switch (mode) {
     case 0:
@@ -273,7 +305,7 @@ void initMode() {
           setupFader();
           break;          
   }  
-  
+
 #ifdef USE_SERIAL_DEBUG
   Serial.print("M:");
   Serial.println(mode);

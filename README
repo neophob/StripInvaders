@@ -26,5 +26,10 @@ Effects:
 9: fader
 
 
-TODO:
--make ip adress configurable or find a working dhcp solution
+Network:
+--------
+DHCP Enabled (and needed!)
+MAC: 00:00:AF:FE:BE:01
+mDNS: invader.local (ping invader.local)
+
+

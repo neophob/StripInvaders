@@ -37,7 +37,7 @@ void oscCallbackG(OSCMessage *_mes){
   oscG = byte( _mes->getArgFloat(0)*255.f );
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print("G:");
+  Serial.print(F("G:"));
   Serial.println(oscG, DEC);
 #endif
 }
@@ -136,9 +136,9 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
   
   //66 is just a magic nr.
   if (magicByte == 66) {
-    EEPROM.write(0, 'I');
-    EEPROM.write(1, 'N');
-    EEPROM.write(2, 'V');
+    EEPROM.write(0, CONST_I);
+    EEPROM.write(1, CONST_N);
+    EEPROM.write(2, CONST_V);
     EEPROM.write(3, dataPin);
     EEPROM.write(4, clkPin);
     

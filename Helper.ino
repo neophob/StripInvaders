@@ -107,7 +107,7 @@ void faderLoop() {
 
 //fade currentbackground color to next, random color
 void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2) {
-
+/*
   Serial.print("fTO: ");
   Serial.print(r, DEC);
   Serial.print(" ");
@@ -119,7 +119,7 @@ void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2
   Serial.print(" ");
   Serial.print(g2, DEC);
   Serial.print(" ");
-  Serial.println(b2, DEC);
+  Serial.println(b2, DEC);*/
 
     float stepsR = (r2-r)/(float)(strip.numPixels()-1);
     float stepsG = (g2-g)/(float)(strip.numPixels()-1);
@@ -129,12 +129,12 @@ void faderTo(uint8_t r, uint8_t g, uint8_t b, uint8_t r2, uint8_t g2, uint8_t b2
       uint8_t rr=r+stepsR*i;
       uint8_t gg=g+stepsG*i;
       uint8_t bb=b+stepsB*i;
-Serial.print(" ");
-Serial.print(rr, DEC);
-Serial.print(" ");
+//Serial.print(" ");
+//Serial.print(rr, DEC);
+//Serial.print(" ");
       setTintPixelColor(i, Color(rr, gg, bb));
     }
-Serial.println();    
+//Serial.println();    
 }
 
 //just blink
