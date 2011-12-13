@@ -88,6 +88,9 @@ const uint32_t WHITE_COLOR = 0xffffff;
   uint16_t maxVal;
 #endif
 
+//reset the arduino
+void(* resetFunc) (void) = 0; //declare reset function @ address 0
+
 /******************************************************************************************
  *  SETUP
  *****************************************************************************************/
@@ -443,7 +446,10 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
   Serial.print("s:");
   Serial.println(mark, DEC);
 #endif  
-
+  
+  //just to be sure
+  delay(250);
+  resetFunc();  //call reset
 }
 
 //*************************/
