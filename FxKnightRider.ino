@@ -12,6 +12,9 @@ byte krSize;
 byte howMany;
 byte krMode;
 
+//krSize  = the size of the moving parts in pixel
+//howMany = how many movers should be active?
+//krMode  = 0:single pixel update, 1: block update
 void setupKnightRider(byte _krSize, byte _howMany, byte _krMode) {
   krSize = _krSize;
   howMany = _howMany;

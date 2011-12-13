@@ -107,6 +107,7 @@ void setup(){
   Serial.println("INVDR!");
 #endif
 
+ //
  byte swapCables = EEPROM.read(0);
  if (swapCables == 66) {
 #ifdef USE_SERIAL_DEBUG
@@ -188,12 +189,13 @@ void loop(){
     //we need to call available check to update the osc server
   }
   
+  //check if the effect should be updated or not
   if (delayTodo>0) {
-     //Delay not finished yet
+     //delay not finished yet - do not modify the strip but read network messages
      delayTodo--;
      delay(1);
   } else {
-    //delay finished, update it
+    //delay finished, update the strip content
     delayTodo=DELAY;
     
 #ifdef USE_AUDIO_INPUT
@@ -201,27 +203,27 @@ void loop(){
 #endif
   
     switch (mode) {
-      case 0:
+      case 0: //color lines
           loopLines();
           break;
-      case 1:  //SOLID Color White
-      case 2:  //Color Wheel
-      case 3:  //Random Fading
+      case 1:  //solid color white
+      case 2:  //solid color wheel fader
+      case 3:  //solid color random fader
           loopSolid();
           break;
       case 4:
-          loopRainbow();    
+          loopRainbow();   //color wheel aka rainbow
           break;
-      case 5: //1 slider
-      case 6:
-      case 7:
-      case 8:
+      case 5: //knight rider, 1 mover
+      case 6: //knight rider, 4 movers
+      case 7: //knight rider, 8 movers
+      case 8: //knight rider, block mode
           loopKnightRider();    
           break;
       case 9:
-          loopFader();
+          loopFader(); //fader
           break;
-      //internal mode
+      //internal mode, fade from one color to another
       case 200:
           faderLoop();
           break;
@@ -230,6 +232,7 @@ void loop(){
     frames++;
   } 
   
+  //reduce osc workaround time, to prevent duplicate messages  
   if (oscCallBackWorkarround>0) {
     oscCallBackWorkarround--;
   }
@@ -270,18 +273,12 @@ void initMode() {
           break;
     case 9:
           setupFader();
-          break;
-          
+          break;          
   }  
-
-  synchronousBlink();
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("M:");
   Serial.println(mode);
 #endif  
 }
-
-
-
 

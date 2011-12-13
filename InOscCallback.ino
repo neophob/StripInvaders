@@ -142,6 +142,10 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
   
   //just to be sure
   delay(250);
+  synchronousBlink();
+  delay(50);
+  synchronousBlink();
+
   resetFunc();  //call reset
 }
 
