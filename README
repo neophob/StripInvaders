@@ -28,4 +28,3 @@ Effects:
 
 TODO:
 -make ip adress configurable or find a working dhcp solution
--make the swp method more flexible, define pins in osc message
