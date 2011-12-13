@@ -10,7 +10,7 @@ Name:   Type:   Range:   Descr:
 /audio  float   0..1     Enable audio sync (toggle button)
 /mode   float   0..1     if mode = 1, switch to next effect
 /modd   float   0..n     direct change to effect x
-/swp            trigger  swap data/clk line, this change is stored in the eeprom
+/swp    3x int           first byte must be 66 (magic byte), then datapin and clkpin. this change is stored in the eeprom
 
 
 Effects:
