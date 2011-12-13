@@ -37,7 +37,7 @@ void oscCallbackG(OSCMessage *_mes){
   oscG = byte( _mes->getArgFloat(0)*255.f );
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.print(F("G:"));
+  Serial.print("G:");
   Serial.println(oscG, DEC);
 #endif
 }

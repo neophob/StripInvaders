@@ -29,7 +29,7 @@
 //use serail debug or not
 #define USE_SERIAL_DEBUG 1
 
-//use serail debug or not
+//use DHCP server OR static IP. Using DHCP and static ip as fallback is not possible, too less space left on arduino ethernet
 #define USE_DHCP 1
 
 //uncomment it to enable audio
