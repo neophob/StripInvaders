@@ -77,7 +77,7 @@ OSCServer oscServer;
 //*************************/
 // Misc
 
-#define MAX_NR_OF_MODES 10
+#define MAX_NR_OF_MODES 12
 #define MAX_SLEEP_TIME 160.0f
 
 uint8_t ledPin =  9;
@@ -255,6 +255,8 @@ void loop(){
           loopKnightRider();    
           break;
       case 9:
+      case 10:
+      case 11:      
           loopXor(); //fader
           break;
       //internal mode, fade from one color to another
@@ -303,7 +305,13 @@ void initMode() {
           setupKnightRider(1, 0, 1);    
           break;
     case 9:
-          setupXor();
+          setupXor(0);
+          break;          
+    case 10:
+          setupXor(1);
+          break;          
+    case 11:
+          setupXor(2);
           break;          
   }  
 
