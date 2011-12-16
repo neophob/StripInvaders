@@ -1,6 +1,18 @@
 StripInvaders
 -------------
 
+A LightStrip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
+Lightshow! Features:
+ - 9 different Light Modes, more will follow
+ - Stepless adjust the RGB values​​
+ - Stepless adjust the animation speed
+ - Control StripInvaders wireless with your iPhone/iPad/Android Phone/Android Tablet (OSC)
+ - Bonjour and mDNS support
+
+Website: http://pixelinvaders.ch/?page_id=396
+
+(c) 2011 by Michael Vogt
+
 OSC Messages:
 -------------
 Name:   Type:   Range:   Descr:
