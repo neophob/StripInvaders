@@ -16,7 +16,7 @@ int clearCol;
 /*
 EFFECT VARIABLES HERE
 */
-int krSize = 4;
+int krSize = 1;
 int kr=0;
 int krDirection=0;
 color col;
@@ -34,16 +34,26 @@ void setup(){
 }
 int r,g,b;
 color c_;
+
 void draw() {
 
 /* EFFECT START HERE */  
 
 //int pixelsPerBlock = 10;
 //int blockSize = 16;
-
+int r,g,b;
+  for (int i=0; i<LEDS; i++) {
+    int ofs = i+frame;
+    r = (ofs^8)%256;
+    g = ((ofs>>1)^8)%256;
+    b = (ofs&4)%256;
+    print(i+":"+r+"/"+"g"+"/"+b+" ");
+    led[i] = color(r,g,b);
+  }
+ println(); 
   
 //BLOCK
-  int ofs=kr*pixelsPerBlock;
+/*  int ofs=kr*pixelsPerBlock;
   color cc = Wheel((frame+kr)%255);
   for (int i=0; i<pixelsPerBlock; i++) {
     led[ofs++] = cc;

@@ -39,6 +39,14 @@
 const uint32_t WHITE_COLOR = 0xffffff;
 
 //*************************/
+// Fader
+
+const uint8_t FADER_STEPS = 25;
+uint8_t clearColR, clearColG, clearColB;
+uint8_t oldR, oldG, oldB;
+uint8_t faderSteps;
+
+//*************************/
 // WS2801
 //how many pixels, I use 32 pixels/m
 #define NR_OF_PIXELS 160
@@ -65,13 +73,6 @@ int serverPort  = 10000;
 byte oscCallBackWorkarround;
 OSCServer oscServer;
 
-//*************************/
-// Fader
-
-const uint8_t FADER_STEPS = 25;
-uint8_t clearColR, clearColG, clearColB;
-uint8_t oldR, oldG, oldB;
-uint8_t faderSteps;
 
 //*************************/
 // Misc
@@ -254,7 +255,7 @@ void loop(){
           loopKnightRider();    
           break;
       case 9:
-          loopFader(); //fader
+          loopXor(); //fader
           break;
       //internal mode, fade from one color to another
       case 200:
@@ -302,7 +303,7 @@ void initMode() {
           setupKnightRider(1, 0, 1);    
           break;
     case 9:
-          setupFader();
+          setupXor();
           break;          
   }  
 
