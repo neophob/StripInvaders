@@ -1,7 +1,6 @@
 StripInvaders
 -------------
-
-A LightStrip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
+A led strip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
 Lightshow! Features:
  - 9 different Light Modes, more will follow
  - Stepless adjust the RGB values​​
@@ -12,6 +11,14 @@ Lightshow! Features:
 Website: http://pixelinvaders.ch/?page_id=396
 
 (c) 2011 by Michael Vogt
+
+
+Required Hardware:
+------------------
+ -Arduino Ethernet
+ -ws2801 based led strips
+ -5v regulated power supply
+
 
 OSC Messages:
 -------------
