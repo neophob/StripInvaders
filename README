@@ -2,7 +2,7 @@ StripInvaders
 -------------
 A led strip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
 Lightshow! Features:
- - 9 different Light Modes, more will follow
+ - 12 different Light Modes, more will follow
  - Stepless adjust the RGB values​​
  - Stepless adjust the animation speed
  - Control StripInvaders wireless with your iPhone/iPad/Android Phone/Android Tablet (OSC)
@@ -36,16 +36,18 @@ Name:   Type:   Range:   Descr:
 
 Effects:
 --------
-0: color lines
-1: solid color (white)
-2: solid color wheel fader
-3: solid color random fader
-4: color wheel aka rainbow
-5: knight rider 1 mover
-6: knight rider 4 movers
-7: knight rider 8 movers
-8: knight rider block
-9: fader
+00: color lines
+01: solid color (white)
+02: solid color wheel fader
+03: solid color random fader
+04: color wheel aka rainbow
+05: knight rider 1 mover
+06: knight rider 4 movers
+07: knight rider 8 movers
+08: knight rider block
+09: xor 1
+10: xor 2
+11: xor 3
 
 
 Network:
