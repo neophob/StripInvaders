@@ -80,7 +80,7 @@ OSCServer oscServer;
 #define MAX_NR_OF_MODES 15
 #define MAX_SLEEP_TIME 160.0f
 
-uint8_t ledPin =  9;
+uint8_t ledPin = 9;
 uint8_t oscR, oscG, oscB;
 uint8_t mode, modeSave;
 int frames=0;
@@ -256,7 +256,10 @@ void loop(){
           break;
       case 9:
       case 10:
-      case 11:      
+      case 11:
+      case 12:
+      case 13:
+      case 14:
           loopXor(); //fader
           break;
       //internal mode, fade from one color to another
