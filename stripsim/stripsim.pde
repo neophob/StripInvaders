@@ -44,13 +44,13 @@ void draw() {
 int r,g,b;
   for (int i=0; i<LEDS; i++) {
     int ofs = i+frame;
-    r = (ofs^8)%256;
-    g = ((ofs>>1)^8)%256;
-    b = (ofs&4)%256;
-    print(i+":"+r+"/"+"g"+"/"+b+" ");
+    r = (ofs^4)%256;
+    g = ((ofs>>1)^i)%256;
+    b = (ofs^ofs)%256;
+//    print(i+":"+r+"/"+g+"/"+b+" ");
     led[i] = color(r,g,b);
   }
- println(); 
+// println(); 
   
 //BLOCK
 /*  int ofs=kr*pixelsPerBlock;
