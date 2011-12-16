@@ -30,6 +30,26 @@ void loopXor() {
           xorG = (ofs^i)%256;
           xorB = (ofs^r)%256;
           break;
+          
+      case 3:
+          xorR = (i*(frame>>1))%256;
+          xorG = (i^ofs)%256;
+          xorB = (ofs)%256;
+          break;
+          
+      case 4:
+          xorR = (frame*i)%256;
+          xorG = xorR;
+          xorB = xorR;
+          break;
+
+      case 5:
+          ofs >>= 3;
+          xorR = (ofs*ofs)%256;
+          xorG = (i*ofs>>1)%256;
+          xorB = ((frame>>3)*ofs>>1)%256;
+          break;
+
     }    
     
     setTintPixelColor(i, Color(xorR, xorG, xorB) );

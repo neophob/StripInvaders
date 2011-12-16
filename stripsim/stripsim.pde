@@ -44,10 +44,12 @@ void draw() {
 int r,g,b;
   for (int i=0; i<LEDS; i++) {
     int ofs = i+frame;
-    r = (ofs^4)%256;
-    g = ((ofs>>1)^i)%256;
-    b = (ofs^ofs)%256;
-//    print(i+":"+r+"/"+g+"/"+b+" ");
+    
+    ofs>>=3;
+    
+    r = (ofs*ofs)%256;
+    g = (i*ofs)%256;
+    b = ((frame>>3)*ofs)%256;
     led[i] = color(r,g,b);
   }
 // println(); 

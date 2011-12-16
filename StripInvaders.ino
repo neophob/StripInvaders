@@ -77,7 +77,7 @@ OSCServer oscServer;
 //*************************/
 // Misc
 
-#define MAX_NR_OF_MODES 12
+#define MAX_NR_OF_MODES 15
 #define MAX_SLEEP_TIME 160.0f
 
 uint8_t ledPin =  9;
@@ -312,6 +312,15 @@ void initMode() {
           break;          
     case 11:
           setupXor(2);
+          break;          
+    case 12:
+          setupXor(3);
+          break;          
+    case 13:
+          setupXor(4);
+          break;          
+    case 14:
+          setupXor(5);
           break;          
   }  
 
