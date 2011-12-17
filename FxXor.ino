@@ -12,7 +12,7 @@ void loopXor() {
   for (int i=0; i < strip.numPixels(); i++) {    
     ofs = i+frames;
     
-    switch (solidmode) {
+    switch (xormode) {
       case 0:
           xorR = (ofs^4)%256;
           xorG = ((ofs>>1)^i)%256;
