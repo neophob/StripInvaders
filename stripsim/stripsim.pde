@@ -45,11 +45,9 @@ int r,g,b;
   for (int i=0; i<LEDS; i++) {
     int ofs = i+frame;
     
-    ofs>>=3;
-    
-    r = (ofs*ofs)%256;
-    g = (i*ofs)%256;
-    b = ((frame>>3)*ofs)%256;
+    r = (ofs&i)%256;
+    g = (frame)%256;
+    b = (ofs&frame)%256;
     led[i] = color(r,g,b);
   }
 // println(); 
