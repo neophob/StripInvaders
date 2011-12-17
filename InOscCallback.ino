@@ -118,7 +118,10 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 //  uint8_t arg=_mes->getArgInt32(0) & 0xff;
   float arg=_mes->getArgFloat(0);
   if (arg < 1.f) {
-    return;
+    //check also for int parameter here!
+    if (_mes->getArgInt32(0) != 1) {
+        return;
+    }
   }
  
   increaseMode(); 

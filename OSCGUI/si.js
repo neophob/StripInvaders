@@ -76,7 +76,7 @@ pages = [
      "x":.0, "y":.55,
      "width":.6, "height":.2,
      "mode": "momentary",
-     "min":0.001, "max":1.0,
+     "min":0.0, "max":1.0,
      "color": "#fc8000",
      "stroke": "#7e4000",
      "label": "MODE",
