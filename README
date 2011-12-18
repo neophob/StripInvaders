@@ -63,5 +63,4 @@ mDNS: invader.local (ping invader.local)
 TODO:
 -----
  - Make nr. of LED Pixels configurable via OSC (and do not forget to add a sanity check to prevent out of memory crash)
- - broadcast ip adress of dhcp ip, create little processing script to detect ip
  - more effects, fader fx is not working very good atm.
