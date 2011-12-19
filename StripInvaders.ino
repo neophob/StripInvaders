@@ -53,8 +53,8 @@ uint8_t faderSteps;
 #define OSC_WORKARROUND_TIME 2
 
 //output pixels dni:3/2
-int dataPin = 2; 
-int clockPin = 3;  
+int dataPin = 3; 
+int clockPin = 2;  
 
 //dummy init the ws2801 lib
 WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
@@ -130,7 +130,7 @@ void setup(){
    //read data and clk pin from the eeprom
    dataPin = EEPROM.read(3);
    clockPin = EEPROM.read(4);
-   strip.updatePins(clockPin, dataPin);
+   strip.updatePins(dataPin, clockPin);
  }
  
 #ifdef USE_SERIAL_DEBUG
@@ -139,7 +139,11 @@ void setup(){
   Serial.print(" C:");
   Serial.println(clockPin, DEC);
 #endif
+
+ //ws2801 start strips 
+ strip.begin();
  
+
 //DHCP, hint: we cannot use DHCP and manual IP together, out of space!
 #ifdef USE_DHCP
  //start Ethernet library using dhcp
@@ -192,9 +196,6 @@ void setup(){
  delay(50);
  synchronousBlink();
 
- //ws2801 start strips 
- strip.begin();
- 
   // Initialize the Bonjour/MDNS library. You can now reach or ping this
   // Arduino via the host name "Invader.local", provided that your operating
   // system is Bonjour-enabled (such as MacOS X).
@@ -332,4 +333,6 @@ void initMode() {
   Serial.println(mode);
 #endif  
 }
+
+
 

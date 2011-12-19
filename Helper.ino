@@ -26,7 +26,7 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
     b *= audioVol;
   }
 #endif
-  
+
   strip.setPixelColor(i, r, g, b);
 }
 

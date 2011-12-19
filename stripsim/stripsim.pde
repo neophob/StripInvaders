@@ -27,10 +27,15 @@ int xxx=0;
 
 void setup(){
   size(LEDS*(LEDSIZE+1), 50);  
-  frameRate(40);
+  frameRate(10);
   
   noStroke();
   background(0);
+  
+  color c = color(244, 222, 199);  
+  int oldr = c>>16 & 0xFF;
+  print("("+oldr+") ");
+
 }
 int r,g,b;
 color c_;
@@ -42,13 +47,21 @@ void draw() {
 //int pixelsPerBlock = 10;
 //int blockSize = 16;
 int r,g,b;
+int ofs=0;
   for (int i=0; i<LEDS; i++) {
-    int ofs = i+frame;
+    b=g=0;
+    r = int(random(160));
     
-    r = (ofs&i)%256;
-    g = (frame)%256;
-    b = (ofs&frame)%256;
-    led[i] = color(r,g,b);
+    int oldr = led[ofs]>>16 & 0xFF;
+ //   print("("+oldr+") ");
+    int diff = Math.abs(r-oldr);
+    if (diff > 60) {
+      g = int(random(r));
+      led[ofs++] = color(r,g,b);
+    } else {
+      led[ofs++] = color(0,0,0);      
+    }
+    
   }
 // println(); 
   
