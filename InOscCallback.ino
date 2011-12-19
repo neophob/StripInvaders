@@ -138,12 +138,12 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
   int clkPin = _mes->getArgInt32(2);
   
   //66 is just a magic nr.
-  if (magicByte == 66) {
-    EEPROM.write(0, CONST_I);
-    EEPROM.write(1, CONST_N);
-    EEPROM.write(2, CONST_V);
-    EEPROM.write(3, dataPin);
-    EEPROM.write(4, clkPin);
+  if (magicByte == EEPROM_MAGIC_BYTE) {
+    EEPROM.write(EEPROM_HEADER_1, CONST_I);
+    EEPROM.write(EEPROM_HEADER_2, CONST_N);
+    EEPROM.write(EEPROM_HEADER_3, CONST_V);
+    EEPROM.write(EEPROM_POS_DATA, dataPin);
+    EEPROM.write(EEPROM_POS_CLK, clkPin);
     
 #ifdef USE_SERIAL_DEBUG
   Serial.println("RBT");

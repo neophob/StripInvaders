@@ -52,6 +52,14 @@ uint8_t faderSteps;
 #define NR_OF_PIXELS 160
 #define OSC_WORKARROUND_TIME 2
 
+//EEPROM offset
+#define EEPROM_HEADER_1 0
+#define EEPROM_HEADER_2 1
+#define EEPROM_HEADER_3 2
+#define EEPROM_POS_DATA 3
+#define EEPROM_POS_CLK 4
+#define EEPROM_MAGIC_BYTE 66
+
 //output pixels dni:3/2
 int dataPin = 3; 
 int clockPin = 2;  
@@ -122,14 +130,14 @@ void setup(){
 #endif
 
  //check if data/clk port is stored in the eeprom. First check for header INV 
- int header1 = EEPROM.read(0);
- int header2 = EEPROM.read(1);
- int header3 = EEPROM.read(2);
+ int header1 = EEPROM.read(EEPROM_HEADER_1);
+ int header2 = EEPROM.read(EEPROM_HEADER_2);
+ int header3 = EEPROM.read(EEPROM_HEADER_3);
  
  if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
    //read data and clk pin from the eeprom
-   dataPin = EEPROM.read(3);
-   clockPin = EEPROM.read(4);
+   dataPin = EEPROM.read(EEPROM_POS_DATA);
+   clockPin = EEPROM.read(EEPROM_POS_CLK);
    strip.updatePins(dataPin, clockPin);
  }
  
