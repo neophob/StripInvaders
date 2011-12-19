@@ -2,6 +2,7 @@
 
 A led strip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
 Lightshow! Features:
+
 * 15 different Light Modes, more will follow
 * Stepless adjust the RGB values​​
 * Stepless adjust the animation speed
