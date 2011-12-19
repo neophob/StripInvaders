@@ -1,7 +1,9 @@
 # StripInvaders
 
 A led strip system controlled by your Smartphone or Tablet. Connect StripInvaders to your LAN and enjoy your own 
-Lightshow! Features:
+Lightshow! 
+
+Features:
 
 * 15 different Light Modes, more will follow
 * Stepless adjust the RGB values​​
@@ -9,7 +11,7 @@ Lightshow! Features:
 * Control StripInvaders wireless with your iPhone/iPad/Android Phone/Android Tablet (OSC)
 * Bonjour and mDNS support
 
-Website: http://pixelinvaders.ch/?page_id=396
+**Website:** http://pixelinvaders.ch/?page_id=396
 
 (c) 2011 by Michael Vogt <michu@neophob.com>
 
