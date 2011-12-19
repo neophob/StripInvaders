@@ -56,9 +56,9 @@ Name:   Type:   Range:   Descr:
 
 ## Network:
 
-  DHCP Enabled (and needed!)
-  MAC: 00:00:AF:FE:BE:01
-  mDNS: invader.local (ping invader.local)
+    DHCP Enabled (and needed!)
+    MAC: 00:00:AF:FE:BE:01
+    mDNS: invader.local (ping invader.local)
 
 
 ## TODO:
