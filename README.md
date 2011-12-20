@@ -33,7 +33,7 @@ Features:
     /audio  float   0..1     Enable audio sync (toggle button)
     /mode   float   0..1     if mode = 1, switch to next effect
     /modd   float   0..n     direct change to effect x
-    /swp    3x int           first byte must be 66 (magic byte), then datapin and clkpin. this change is 
+    /cfg    4x int           first byte must be 66 (magic byte), then DATAPIN, CLKPIN and then LEDCOUNT. this change is 
                              stored in the eeprom. The Arduino will reboot after the update
 
 
@@ -65,5 +65,4 @@ Features:
 
 ## TODO:
 
-* Make nr. of LED Pixels configurable via OSC (and do not forget to add a sanity check to prevent out of memory crash)
 * more effects, fader fx is not working very good atm.

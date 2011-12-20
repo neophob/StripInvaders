@@ -4,7 +4,7 @@
 #X msg 335 537 disconnect;
 #X floatatom 388 492 5 0 0 0 - - -;
 #X obj 360 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
--1 -1 1500 1;
+-1 -1 0 1;
 #X obj 395 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
 -1 -1 0 1;
 #X obj 433 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
@@ -36,8 +36,8 @@
 #X text 50 146 change to mode 6;
 #X text 34 208 switch to next mode;
 #X msg 75 485 connect 10.0.1.17 10000;
-#X msg 180 15 /swp 66 3 2;
 #X msg 44 429 connect pixelinvader.local;
+#X msg 180 15 /cfg 66 3 4 160;
 #X connect 1 0 15 0;
 #X connect 3 0 9 0;
 #X connect 4 0 10 0;
@@ -61,5 +61,5 @@
 #X connect 25 0 16 0;
 #X connect 26 0 16 0;
 #X connect 29 0 15 0;
-#X connect 30 0 16 0;
-#X connect 31 0 15 0;
+#X connect 30 0 15 0;
+#X connect 31 0 16 0;

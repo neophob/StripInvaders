@@ -21,7 +21,7 @@
 #define OSC_MSG_CHANGE_MODE "/mode"
 #define OSC_MSG_CHANGE_MODE_DIRECT "/modd"
 #define OSC_MSG_AUDIO "/audio"
-#define OSC_MSG_SWAP_CABELING "/swp"
+#define OSC_MSG_CONFIG "/cfg"
 
 //*************************/
 // Defines
@@ -58,6 +58,7 @@ uint8_t faderSteps;
 #define EEPROM_HEADER_3 2
 #define EEPROM_POS_DATA 3
 #define EEPROM_POS_CLK 4
+#define EEPROM_POS_COUNT 5
 #define EEPROM_MAGIC_BYTE 66
 
 //output pixels dni:3/2
@@ -65,7 +66,8 @@ int dataPin = 3;
 int clockPin = 2;  
 
 //dummy init the ws2801 lib
-WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
+//WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
+WS2801 strip = WS2801(); 
 
 //*************************/
 // Network settings
@@ -124,30 +126,41 @@ void setup(){
   mode=0;
   oscCallBackWorkarround = 0;
 
+  int cnt = NR_OF_PIXELS;
+  
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
   Serial.println("INV!");
 #endif
 
   //check if data/clk port is stored in the eeprom. First check for header INV 
-  int header1 = EEPROM.read(EEPROM_HEADER_1);
-  int header2 = EEPROM.read(EEPROM_HEADER_2);
-  int header3 = EEPROM.read(EEPROM_HEADER_3);
+  byte header1 = EEPROM.read(EEPROM_HEADER_1);
+  byte header2 = EEPROM.read(EEPROM_HEADER_2);
+  byte header3 = EEPROM.read(EEPROM_HEADER_3);
 
   if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
     //read data and clk pin from the eeprom
     dataPin = EEPROM.read(EEPROM_POS_DATA);
     clockPin = EEPROM.read(EEPROM_POS_CLK);
-    strip.updatePins(dataPin, clockPin);
+    cnt = EEPROMReadInt(EEPROM_POS_COUNT);
+    
+    //just add some sanity check here, prevent out of memory
+    if (cnt<1 || cnt>1024) {
+      cnt = NR_OF_PIXELS;
+    }
   }
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("D:");
   Serial.print(dataPin, DEC);
   Serial.print(" C:");
-  Serial.println(clockPin, DEC);
+  Serial.print(clockPin, DEC);
+  Serial.print("//");
+  Serial.println(cnt, DEC);
 #endif
 
+  strip = WS2801(cnt, dataPin, clockPin); 
+  
   //ws2801 start strips 
   strip.begin();
 
@@ -185,7 +198,7 @@ void setup(){
   oscServer.addCallback(OSC_MSG_SET_DELAY, &oscCallbackDelay); //PARAMETER: 1, float value 0..1
   oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
   oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
-  oscServer.addCallback(OSC_MSG_SWAP_CABELING, &oscCallbackSwapCabeling);
+  oscServer.addCallback(OSC_MSG_CONFIG, &oscCallbackConfig);
 
 #ifdef USE_AUDIO_INPUT
   Serial.println("AU");

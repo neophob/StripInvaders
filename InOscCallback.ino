@@ -129,22 +129,25 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 
 
 //Swap cabling of ws2801 strips and store config into eeprom
-void oscCallbackSwapCabeling(OSCMessage *_mes){
+void oscCallbackConfig(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
   
   int magicByte = _mes->getArgInt32(0);
   int dataPin = _mes->getArgInt32(1);
   int clkPin = _mes->getArgInt32(2);
-  
+  int cnt = _mes->getArgInt32(3);
+    Serial.println(cnt, DEC);
+    
   //66 is just a magic nr.
-  if (magicByte == EEPROM_MAGIC_BYTE) {
+  if (magicByte == EEPROM_MAGIC_BYTE && dataPin>0 && clkPin>0 && count>0 && dataPin!=clkPin) {
     EEPROM.write(EEPROM_HEADER_1, CONST_I);
     EEPROM.write(EEPROM_HEADER_2, CONST_N);
     EEPROM.write(EEPROM_HEADER_3, CONST_V);
     EEPROM.write(EEPROM_POS_DATA, dataPin);
     EEPROM.write(EEPROM_POS_CLK, clkPin);
-    
+    EEPROMWriteInt(EEPROM_POS_COUNT, count);
+
 #ifdef USE_SERIAL_DEBUG
   Serial.println("RBT");
 #endif  
@@ -155,6 +158,11 @@ void oscCallbackSwapCabeling(OSCMessage *_mes){
     synchronousBlink();
 
     resetFunc();  //call reset    
+  } else {
+
+#ifdef USE_SERIAL_DEBUG
+  Serial.println("Invalid");
+#endif      
   }
     
 }
