@@ -24,6 +24,7 @@ Features:
 * Optional: Seeedstudio [Grove Base Shield](http://www.seeedstudio.com/depot/grove-base-shield-p-754.html?cPath=132_134)
 * Optional: Seeedstudio [Grove - Universal 4 Pin Cable](http://www.seeedstudio.com/depot/grove-universal-4-pin-20cm-cable-5-pcs-pack-p-749.html?cPath=178_179)
 * If you want to use the Grove Base Shield, make sure you need 2x 8-pin Header and 2x 6-pin Header, like the [Seeeduino Mega Protoshield Kit](http://www.seeedstudio.com/depot/seeeduino-mega-protoshield-kit-p-597.html?cPath=132_134)
+
 ## OSC Messages:
 
     Name:   Type:   Range:   Descr:
