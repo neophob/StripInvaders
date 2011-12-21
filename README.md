@@ -10,6 +10,7 @@ Features:
 * Stepless adjust the animation speed
 * Control StripInvaders wireless with your iPhone/iPad/Android Phone/Android Tablet (OSC)
 * Bonjour and mDNS support
+* DHCP support
 
 **Website:** http://pixelinvaders.ch/?page_id=396
 
