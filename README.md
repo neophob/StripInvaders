@@ -65,4 +65,14 @@ Features:
 
 ## TODO:
 
-* more effects, fader fx is not working very good atm.
+* more effects
+
+
+## OSC GUI
+
+StripInvaders provide some ready to use OSC GUI's:
+* [PureData](http://puredata.info/) OSC Gui, path: OSCGUI/simple.pd
+* [Control](http://charlie-roberts.com/Control/) OSC Gui, path: OSCGUI/si.js
+* [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, path: OSCGUI/comming soon
+
+
