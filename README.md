@@ -21,7 +21,8 @@ Features:
 * Arduino Ethernet
 * ws2801 based led strips, I sell some at [my shop](http://pixelinvaders.ch/?page_id=390)
 * 5v regulated power supply
-
+* Optional: Seeedstudio [Grove Base Shield](http://www.seeedstudio.com/depot/grove-base-shield-p-754.html?cPath=132_134)
+* Optional: Seeedstudio [Grove - Universal 4 Pin Cable](http://www.seeedstudio.com/depot/grove-universal-4-pin-20cm-cable-5-pcs-pack-p-749.html?cPath=178_179)
 
 ## OSC Messages:
 
