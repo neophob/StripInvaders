@@ -68,8 +68,8 @@ Features:
 
 ## TODO:
 
-* more effects
-
+* More effects (Plasma, Fire)
+* Improve Audiosync 
 
 ## OSC GUI
 
