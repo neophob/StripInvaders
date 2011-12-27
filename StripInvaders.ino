@@ -1,14 +1,15 @@
 //StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
 //Network/OSC Enabled Strip Controller
 //Needed 3rd Party Library:
-//  -https://github.com/neophob/EthernetBonjour (Bonjour)
-//  -https://github.com/neophob/WS2801-Library (WS2801)
-//  -https://github.com/neophob/ArdOSC (AndOSC)
+//  -https://github.com/neophob/EthernetBonjour (Bonjour, original code by gkaindl.com)
+//  -https://github.com/neophob/ArdOSC (AndOSC, origianl code by recotana.com)
+//  -https://github.com/neophob/WS2801-Library (WS2801, original code by adafruit.com)
+//   OR
+//  -https://github.com/neophob/LPD8806 (LPD8806, original code by adafruit.com)
 
 #include <SPI.h>
 #include <Ethernet.h>
 #include <ArdOSC.h>
-#include "WS2801.h"
 #include <EthernetBonjour.h>
 #include <EEPROM.h>
 
@@ -22,6 +23,19 @@
 #define OSC_MSG_CHANGE_MODE_DIRECT "/modd"
 #define OSC_MSG_AUDIO "/audio"
 #define OSC_MSG_CONFIG "/cfg"
+
+//*************************/
+// define strip hardware, use only ONE hardware type
+#define USE_WS2801 1
+//#define USE_LPD8806 1
+
+
+#ifdef USE_WS2801
+  #include <WS2801.h>
+#endif
+#ifdef USE_LPD8806
+  #include <LPD8806.h>
+#endif  
 
 //*************************/
 // Defines
@@ -65,9 +79,13 @@ uint8_t faderSteps;
 int dataPin = 3; 
 int clockPin = 2;  
 
-//dummy init the ws2801 lib
-//WS2801 strip = WS2801(NR_OF_PIXELS, dataPin, clockPin); 
+//dummy init the pixel lib
+#ifdef USE_WS2801
 WS2801 strip = WS2801(); 
+#endif
+#ifdef USE_LPD8806
+LPD8806 strip = LPD8806(); 
+#endif  
 
 //*************************/
 // Network settings
@@ -159,7 +177,13 @@ void setup(){
   Serial.println(cnt, DEC);
 #endif
 
+#ifdef USE_WS2801
   strip = WS2801(cnt, dataPin, clockPin); 
+#endif
+#ifdef USE_LPD8806
+  strip = LPD8806(cnt, dataPin, clockPin); 
+#endif  
+
   
   //ws2801 start strips 
   strip.begin();
