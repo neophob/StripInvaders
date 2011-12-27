@@ -11,6 +11,7 @@ Features:
 * Control StripInvaders wireless with your iPhone/iPad/Android Phone/Android Tablet (OSC)
 * Bonjour and mDNS support
 * DHCP support
+* Configure your strip (connected pins, nr. of leds) without reflashing firmware, use OSC to configure
 
 **Website:** http://pixelinvaders.ch/?page_id=396
 
