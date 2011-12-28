@@ -28,7 +28,14 @@ void setTintPixelColor(uint16_t i, uint32_t c) {
   }
 #endif
 
+
+#ifdef USE_WS2801
   strip.setPixelColor(i, r, g, b);
+#endif
+#ifdef USE_LPD8806
+  strip.setPixelColor(i, b>>1, g>>1, r>>1);
+#endif  
+
 }
 
 
