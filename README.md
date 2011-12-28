@@ -71,7 +71,7 @@ Features:
 
 * More effects (Plasma, Fire)
 * Improve Audiosync 
-
+* One Firmware for both drivers (WS2801/LPD8806), also enhance setup function
 ## OSC GUI
 
 StripInvaders provide some ready to use OSC GUI's:

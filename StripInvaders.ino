@@ -1,4 +1,4 @@
-//StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // pixelinvaders.ch
+//StripInvader (c) 2011 Michael Vogt <michu@neophob.com> // http://pixelinvaders.ch
 //Network/OSC Enabled Strip Controller
 //Needed 3rd Party Library:
 //  -https://github.com/neophob/EthernetBonjour (Bonjour, original code by gkaindl.com)
@@ -148,7 +148,14 @@ void setup(){
   
 #ifdef USE_SERIAL_DEBUG
   Serial.begin(115200);
-  Serial.println("INV!");
+  
+#ifdef USE_WS2801
+  Serial.println("INV2801!");
+#endif
+#ifdef USE_LPD8806
+  Serial.println("INV8806!");
+#endif    
+
 #endif
 
   //check if data/clk port is stored in the eeprom. First check for header INV 
