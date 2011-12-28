@@ -338,13 +338,9 @@ void initMode() {
     setupLines();
     break;
   case 1:  
-    setupSolid(0);
-    break;
   case 2:
-    setupSolid(1);
-    break;
   case 3:
-    setupSolid(2);    
+    setupSolid(mode-1);
     break;
   case 4:
     setupRainbow();    
@@ -361,23 +357,14 @@ void initMode() {
   case 8:
     setupKnightRider(1, 0, 1);    
     break;
+  //save some bytes here, setupXor from (0) till (5)
   case 9:
-    setupXor(0);
-    break;          
   case 10:
-    setupXor(1);
-    break;          
   case 11:
-    setupXor(2);
-    break;          
   case 12:
-    setupXor(3);
-    break;          
   case 13:
-    setupXor(4);
-    break;          
-  case 14:
-    setupXor(5);
+  case 14:  
+    setupXor(mode-9);
     break;          
   }  
 
