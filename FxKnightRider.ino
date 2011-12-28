@@ -2,8 +2,8 @@
 //
 //Knight Rider effects
 
-const uint8_t pixelsPerBlock = 10;
-const uint8_t blockSize = 16;
+uint8_t pixelsPerBlock;
+uint8_t blockSize;
 
 uint16_t kr=0;
 
@@ -19,6 +19,9 @@ void setupKnightRider(byte _krSize, byte _howMany, byte _krMode) {
   krSize = _krSize;
   howMany = _howMany;
   krMode = _krMode;
+  
+  pixelsPerBlock = strip.numPixels() / 16;
+  blockSize = strip.numPixels() / pixelsPerBlock;
 }
 
 
