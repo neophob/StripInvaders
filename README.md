@@ -69,7 +69,7 @@ Features:
 
 ## TODO:
 
-* More effects (Plasma, Fire)
+* More effects (Plasma, Fire, Perlin Noise)
 * Improve Audiosync 
 * Gamma correction
 
