@@ -15,12 +15,16 @@ void oscCallbackDelay(OSCMessage *_mes){
 #endif 
 }
 
+byte getFirstFloatArgument(OSCMessage *_mes) {
+  return byte( _mes->getArgFloat(0)*255.f );
+}
+
 // R
 void oscCallbackR(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  oscR = byte( _mes->getArgFloat(0)*255.f );
+  oscR = getFirstFloatArgument(_mes);
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("R:");
@@ -34,7 +38,7 @@ void oscCallbackG(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  oscG = byte( _mes->getArgFloat(0)*255.f );
+  oscG = getFirstFloatArgument(_mes);
 
 #ifdef USE_SERIAL_DEBUG
   Serial.print("G:");
@@ -48,7 +52,7 @@ void oscCallbackB(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
-  oscB = byte( _mes->getArgFloat(0)*255.f );
+  oscB = getFirstFloatArgument(_mes);
   
 #ifdef USE_SERIAL_DEBUG
   Serial.print("B:");
