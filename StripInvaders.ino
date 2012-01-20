@@ -96,7 +96,6 @@ LPD8806 strip = LPD8806();
 
 byte myMac[] = { 0x00, 0x00, 0xAF, 0xFE, 0xBE, 0x01 };
 
-
 const int serverPort  = 10000;
 byte oscCallBackWorkarround;
 OSCServer oscServer;
@@ -108,7 +107,7 @@ OSCServer oscServer;
 #define MAX_NR_OF_MODES 15
 #define MAX_SLEEP_TIME 160.0f
 
-uint8_t ledPin = 9;
+const uint8_t ledPin = 9;
 uint8_t oscR, oscG, oscB;
 uint8_t mode, modeSave;
 int frames=0;
