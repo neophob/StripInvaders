@@ -142,7 +142,9 @@ void oscCallbackConfig(OSCMessage *_mes){
   int dataPin = _mes->getArgInt32(1);
   int clkPin = _mes->getArgInt32(2);
   int cnt = _mes->getArgInt32(3);
+#ifdef USE_SERIAL_DEBUG
   Serial.println(cnt, DEC);
+#endif  
     
   //66 is just a magic nr.
   if (magicByte == EEPROM_MAGIC_BYTE && dataPin>0 && clkPin>0 && cnt>0 && dataPin!=clkPin) {
@@ -151,14 +153,14 @@ void oscCallbackConfig(OSCMessage *_mes){
     EEPROM.write(EEPROM_HEADER_3, CONST_V);
     EEPROM.write(EEPROM_POS_DATA, dataPin);
     EEPROM.write(EEPROM_POS_CLK, clkPin);
+    //write two bytes
     EEPROMWriteInt(EEPROM_POS_COUNT, cnt);
 
 #ifdef USE_SERIAL_DEBUG
   Serial.println("RBT");
 #endif  
+
     //just to be sure
-    delay(250);
-    synchronousBlink();
     delay(50);
     synchronousBlink();
 
