@@ -15,6 +15,7 @@ void oscCallbackDelay(OSCMessage *_mes){
 #endif 
 }
 
+//convert the first osc argument and return byte
 byte getFirstFloatArgument(OSCMessage *_mes) {
   return byte( _mes->getArgFloat(0)*255.f );
 }
