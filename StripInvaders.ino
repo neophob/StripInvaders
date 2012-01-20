@@ -97,7 +97,7 @@ LPD8806 strip = LPD8806();
 byte myMac[] = { 0x00, 0x00, 0xAF, 0xFE, 0xBE, 0x01 };
 
 
-int serverPort  = 10000;
+const int serverPort  = 10000;
 byte oscCallBackWorkarround;
 OSCServer oscServer;
 
@@ -237,7 +237,7 @@ void setup(){
 #endif
 
   //init effect
-  setupLines();
+  initMode();
 
   pinMode(ledPin, OUTPUT);  
 
@@ -258,7 +258,7 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  int ret = EthernetBonjour.addServiceRecord("Invader._osc", 10000, MDNSServiceUDP);  
+  int ret = EthernetBonjour.addServiceRecord("Invader._osc", serverPort, MDNSServiceUDP);  
   if (ret==0) {
     //error, bonjour service failed
   }
@@ -330,6 +330,10 @@ void loop(){
     oscCallBackWorkarround--;
   }
 }
+
+/*****************************************************************************************
+ *  INIT MODE
+ *****************************************************************************************/
 
 void initMode() {
 
