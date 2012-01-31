@@ -42,6 +42,7 @@ void loopLines() {
 }
 
 
+
 //init a new line animation
 void newAnimation() {
   lines.length = 0;
