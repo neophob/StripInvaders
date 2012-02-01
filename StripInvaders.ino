@@ -199,8 +199,10 @@ void setup(){
 #ifdef USE_DHCP
   //start Ethernet library using dhcp
   if (Ethernet.begin(myMac) == 0) {
+#ifdef USE_SERIAL_DEBUG
     Serial.println("Failed to configure Ethernet using DHCP");
-    // no point in carrying on, so do nothing forevermore:
+#endif
+// no point in carrying on, so do nothing forevermore:
     for(;;)
       ;
   }
