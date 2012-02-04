@@ -76,12 +76,11 @@ Features:
 
 ## Misc:
 * One Firmware for both drivers (WS2801/LPD8806) is not possible, due size limitation.
-
+* check http://neophob.com/2012/01/stripinvaders-howto-assemble/ for more information how to assemble the LED Strip
 
 ## OSC GUI
-
 StripInvaders provide some ready to use OSC GUI's:
-
+* [OSX/WIN](https://github.com/neophob/StripInvaders/downloads) Application to configure the PixelController
 * [PureData](http://puredata.info/) OSC Gui, path: OSCGUI/simple.pd (needed to configure the PixelController)
 * [Control](http://charlie-roberts.com/Control/) OSC Gui, path: OSCGUI/si.js
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, path: OSCGUI/StripInvaders_iPhone.touchosc
