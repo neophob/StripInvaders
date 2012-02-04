@@ -80,6 +80,7 @@ Features:
 
 ## OSC GUI
 StripInvaders provide some ready to use OSC GUI's:
+
 * [OSX/WIN](https://github.com/neophob/StripInvaders/downloads) Application to configure the PixelController
 * [PureData](http://puredata.info/) OSC Gui, path: OSCGUI/simple.pd (needed to configure the PixelController)
 * [Control](http://charlie-roberts.com/Control/) OSC Gui, path: OSCGUI/si.js
