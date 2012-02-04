@@ -55,7 +55,7 @@ private void sendConfiguration() {
     oscP5.disconnect(stripInvader);
     oscP5.dispose();
     
-    updateTextfield("StripInvader updated!");
+    updateTextfield("StripInvader updated, the controller is rebooting now.");
 
   } 
   catch (Exception e) {
