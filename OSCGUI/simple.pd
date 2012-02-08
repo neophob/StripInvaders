@@ -3,63 +3,63 @@
 0;
 #X msg 335 537 disconnect;
 #X floatatom 388 492 5 0 0 0 - - -;
-#X obj 360 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
--1 -1 10700 1;
-#X obj 395 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
--1 -1 0 1;
-#X obj 433 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
--1 -1 0 1;
-#X msg 353 283 sendtyped /knbg f \$1;
-#X msg 339 209 sendtyped /knbr f \$1;
-#X msg 433 260 sendtyped /knbb f \$1;
-#X obj 339 186 pack f;
-#X obj 353 260 pack f;
-#X obj 433 237 pack f;
-#X obj 629 183 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -128992
--1 -1 0 1;
-#X obj 564 345 pack f;
-#X msg 564 375 sendtyped /delay f \$1;
+#X msg 306 323 sendtyped /knbg f \$1;
+#X msg 292 249 sendtyped /knbr f \$1;
+#X msg 386 300 sendtyped /knbb f \$1;
+#X obj 292 226 pack f;
+#X obj 306 300 pack f;
+#X obj 386 277 pack f;
+#X obj 524 286 pack f;
+#X msg 524 316 sendtyped /delay f \$1;
 #X obj 316 576 mrpeach/udpsend;
 #X obj 324 458 mrpeach/packOSC;
-#X obj 587 93 print;
-#X obj 587 31 mrpeach/udpreceive 10000;
-#X obj 587 62 mrpeach/unpackOSC;
-#X msg 65 515 connect 192.168.111.20 10000;
-#X obj 170 -14 cnv 15 100 110 empty empty Setup 20 12 0 14 -257985
+#X obj 627 573 print;
+#X obj 627 511 mrpeach/udpreceive 10000;
+#X obj 627 542 mrpeach/unpackOSC;
+#X obj 645 386 cnv 15 120 110 empty empty Setup 20 12 0 14 -257985
 -66577 0;
-#X obj 11 82 cnv 15 140 200 empty empty Change_Mode 20 12 0 14 -260097
--66577 0;
-#X msg 18 128 sendtyped /modd f 6;
-#X msg 22 190 sendtyped /mode f 1;
-#X msg 184 42 /audio 1;
-#X msg 184 69 /audio 0;
-#X text 50 146 change to mode 6;
-#X text 34 208 switch to next mode;
-#X msg 75 485 connect 10.0.1.17 10000;
-#X msg 44 429 connect invader.local 10000;
-#X msg 180 15 /cfg 66 2 3 160;
-#X connect 1 0 15 0;
-#X connect 3 0 9 0;
-#X connect 4 0 10 0;
-#X connect 5 0 11 0;
-#X connect 6 0 16 0;
-#X connect 7 0 16 0;
-#X connect 8 0 16 0;
-#X connect 9 0 7 0;
-#X connect 10 0 6 0;
-#X connect 11 0 8 0;
-#X connect 12 0 13 0;
-#X connect 13 0 14 0;
-#X connect 14 0 16 0;
-#X connect 16 0 15 0;
-#X connect 16 1 2 0;
-#X connect 18 0 19 0;
-#X connect 19 0 17 0;
-#X connect 20 0 15 0;
-#X connect 23 0 16 0;
-#X connect 24 0 16 0;
-#X connect 25 0 16 0;
-#X connect 26 0 16 0;
-#X connect 29 0 15 0;
-#X connect 30 0 15 0;
-#X connect 31 0 16 0;
+#X obj 121 3 cnv 15 140 200 empty empty Mode 20 12 0 14 -260097 -66577
+0;
+#X msg 128 49 sendtyped /modd f 6;
+#X msg 132 111 sendtyped /mode f 1;
+#X msg 659 442 /audio 1;
+#X msg 659 469 /audio 0;
+#X text 160 67 change to mode 6;
+#X text 144 129 switch to next mode;
+#X msg 15 355 connect invader.local 10000;
+#X msg 655 415 /cfg 66 2 3 160;
+#X obj 295 3 cnv 15 140 180 empty empty RGB 20 12 0 14 -260097 -66577
+0;
+#X obj 320 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
+-1 -1 0 1;
+#X obj 355 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
+-1 -1 0 1;
+#X obj 393 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
+-1 -1 0 1;
+#X obj 469 4 cnv 15 140 180 empty empty Delay 20 12 0 14 -260097 -66577
+0;
+#X obj 524 43 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -128992
+-1 -1 0 1;
+#X connect 1 0 11 0;
+#X connect 3 0 12 0;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 6 0 4 0;
+#X connect 7 0 3 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 12 0;
+#X connect 12 0 11 0;
+#X connect 12 1 2 0;
+#X connect 14 0 15 0;
+#X connect 15 0 13 0;
+#X connect 18 0 12 0;
+#X connect 19 0 12 0;
+#X connect 20 0 12 0;
+#X connect 21 0 12 0;
+#X connect 24 0 11 0;
+#X connect 25 0 12 0;
+#X connect 27 0 6 0;
+#X connect 28 0 7 0;
+#X connect 29 0 8 0;
+#X connect 31 0 9 0;
