@@ -3,14 +3,14 @@
 0;
 #X msg 335 537 disconnect;
 #X floatatom 388 492 5 0 0 0 - - -;
-#X msg 306 323 sendtyped /knbg f \$1;
-#X msg 292 249 sendtyped /knbr f \$1;
-#X msg 386 300 sendtyped /knbb f \$1;
-#X obj 292 226 pack f;
-#X obj 306 300 pack f;
-#X obj 386 277 pack f;
-#X obj 524 286 pack f;
-#X msg 524 316 sendtyped /delay f \$1;
+#X msg 406 323 sendtyped /knbg f \$1;
+#X msg 392 249 sendtyped /knbr f \$1;
+#X msg 486 300 sendtyped /knbb f \$1;
+#X obj 392 226 pack f;
+#X obj 406 300 pack f;
+#X obj 486 277 pack f;
+#X obj 624 286 pack f;
+#X msg 624 316 sendtyped /delay f \$1;
 #X obj 316 576 mrpeach/udpsend;
 #X obj 324 458 mrpeach/packOSC;
 #X obj 627 573 print;
@@ -18,27 +18,27 @@
 #X obj 627 542 mrpeach/unpackOSC;
 #X obj 645 386 cnv 15 120 110 empty empty Setup 20 12 0 14 -257985
 -66577 0;
-#X obj 121 3 cnv 15 140 200 empty empty Mode 20 12 0 14 -260097 -66577
+#X obj 221 3 cnv 15 140 200 empty empty Mode 20 12 0 14 -260097 -66577
 0;
-#X msg 128 49 sendtyped /modd f 6;
-#X msg 132 111 sendtyped /mode f 1;
+#X msg 228 49 sendtyped /modd f 6;
+#X msg 232 111 sendtyped /mode f 1;
 #X msg 659 442 /audio 1;
 #X msg 659 469 /audio 0;
-#X text 160 67 change to mode 6;
-#X text 144 129 switch to next mode;
-#X msg 15 355 connect invader.local 10000;
+#X text 260 67 change to mode 6;
+#X text 244 129 switch to next mode;
+#X msg 26 59 connect invader.local 10000;
 #X msg 655 415 /cfg 66 2 3 160;
-#X obj 295 3 cnv 15 140 180 empty empty RGB 20 12 0 14 -260097 -66577
+#X obj 395 3 cnv 15 140 180 empty empty RGB 20 12 0 14 -260097 -66577
 0;
-#X obj 320 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
+#X obj 420 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
 -1 -1 0 1;
-#X obj 355 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
+#X obj 455 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
 -1 -1 0 1;
-#X obj 393 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
+#X obj 493 44 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
 -1 -1 0 1;
-#X obj 469 4 cnv 15 140 180 empty empty Delay 20 12 0 14 -260097 -66577
+#X obj 569 4 cnv 15 140 180 empty empty Delay 20 12 0 14 -260097 -66577
 0;
-#X obj 524 43 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -128992
+#X obj 624 43 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -128992
 -1 -1 0 1;
 #X connect 1 0 11 0;
 #X connect 3 0 12 0;
