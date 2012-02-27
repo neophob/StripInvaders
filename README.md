@@ -72,6 +72,7 @@ Features:
 * More effects (Plasma, Fire, Perlin Noise)
 * Improve Audiosync 
 * Gamma correction
+* save/load present (current mode, rgb values)
 
 
 ## Misc:
