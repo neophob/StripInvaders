@@ -59,9 +59,10 @@ void initGui() {
     .setValue(0)
       .setPosition(20, 190)
         .setSize(200, 20)
-          ;
+          .lock()
+            ;
 
-  cp5.addTextlabel("logo", "StripInvader Config v0.1", 205, 310).setFont(ControlP5.synt24);
+  cp5.addTextlabel("logo", "StripInvader Config v0.2", 205, 310).setFont(ControlP5.synt24);
 }
 
 //enable user input
@@ -70,6 +71,7 @@ void unlockGui() {
   sClk.unlock();
   sCount.unlock();
   btnDefault.unlock();
+  btnConfig.unlock();
 }
 
 void controlEvent(ControlEvent theEvent) {
