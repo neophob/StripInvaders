@@ -23,6 +23,7 @@
 #define OSC_MSG_CHANGE_MODE_DIRECT "/modd"
 #define OSC_MSG_AUDIO "/audio"
 #define OSC_MSG_CONFIG "/cfg"
+#define OSC_MSG_SAVE "/sav"
 
 //*************************/
 // define strip hardware, use only ONE hardware type
@@ -74,6 +75,15 @@ uint8_t faderSteps;
 #define EEPROM_POS_CLK 4
 #define EEPROM_POS_COUNT 5
 #define EEPROM_MAGIC_BYTE 66
+
+#define EEPROM_HEADER_10 10
+#define EEPROM_HEADER_11 11
+#define EEPROM_HEADER_12 12
+#define EEPROM_POS_MODE 13
+#define EEPROM_POS_DELAY 14
+#define EEPROM_POS_R 15
+#define EEPROM_POS_G 16
+#define EEPROM_POS_B 17
 
 //output pixels dni:3/2
 int dataPin = 3; 
@@ -231,6 +241,8 @@ void setup(){
   oscServer.addCallback(OSC_MSG_CHANGE_MODE, &oscCallbackChangeMode); //PARAMETER: None, just a trigger
   oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
   oscServer.addCallback(OSC_MSG_CONFIG, &oscCallbackConfig);
+  oscServer.addCallback(OSC_MSG_SAVE, &oscCallbackSavePreset);  
+  
 
 #ifdef USE_AUDIO_INPUT
   Serial.println("AU");
@@ -253,6 +265,9 @@ void setup(){
   // Arduino via the host name "Invader.local", provided that your operating
   // system is Bonjour-enabled (such as MacOS X).
   EthernetBonjour.begin("Invader");
+  
+  //load presets
+  restorePresetStateFromEeprom();
 
   // Now let's register the service we're offering (a web service) via Bonjour!
   // With the service registered, it will show up in a Bonjour-enabled web

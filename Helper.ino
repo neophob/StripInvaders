@@ -137,3 +137,34 @@ unsigned int EEPROMReadInt(int p_address) {
   return ((lowByte << 0) & 0xFF) + ((highByte << 8) & 0xFF00);
 }
 
+//store current mode to eeprom
+void saveCurrentStateToEeprom() {
+  EEPROM.write(EEPROM_HEADER_10, CONST_I);
+  EEPROM.write(EEPROM_HEADER_11, CONST_N);
+  EEPROM.write(EEPROM_HEADER_12, CONST_V);
+  EEPROM.write(EEPROM_POS_MODE, mode);
+  EEPROM.write(EEPROM_POS_DELAY, DELAY);
+  EEPROM.write(EEPROM_POS_R, oscR);
+  EEPROM.write(EEPROM_POS_G, oscG);  
+  EEPROM.write(EEPROM_POS_B, oscB);
+}
+
+//load savet preset from eeprom (if available)
+void restorePresetStateFromEeprom() {
+  //check if data/clk port is stored in the eeprom. First check for header INV 
+  byte header1 = EEPROM.read(EEPROM_HEADER_10);
+  byte header2 = EEPROM.read(EEPROM_HEADER_11);
+  byte header3 = EEPROM.read(EEPROM_HEADER_12);
+
+  if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
+    mode = EEPROM.read(EEPROM_POS_MODE);
+    if (mode>=MAX_NR_OF_MODES) {
+      mode=0;
+    }
+    DELAY = EEPROM.read(EEPROM_POS_DELAY);
+    oscR = EEPROM.read(EEPROM_POS_R);
+    oscG = EEPROM.read(EEPROM_POS_G);
+    oscB = EEPROM.read(EEPROM_POS_B);
+  }
+}
+

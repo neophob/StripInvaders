@@ -54,7 +54,7 @@ void oscCallbackB(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
   oscB = getFirstFloatArgument(_mes);
-  
+
 #ifdef USE_SERIAL_DEBUG
   Serial.print("B:");
   Serial.println(oscB, DEC);
@@ -72,7 +72,8 @@ void oscCallbackAudio(OSCMessage *_mes){
   float arg=_mes->getArgFloat(0);
   if (arg==0.0f) {
     isAudioVolumeEnabled = false;
-  } else {
+  } 
+  else {
     isAudioVolumeEnabled = true;
   }
 
@@ -88,7 +89,7 @@ void oscCallbackAudio(OSCMessage *_mes){
 void oscCallbackChangeModeDirect(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-  
+
   byte arg=byte(_mes->getArgFloat(0));  
   if (arg > MAX_NR_OF_MODES-1) {
     return;
@@ -105,10 +106,11 @@ void increaseMode() {
   if (modeSave<MAX_NR_OF_MODES-1) {
     //incase we are fading (mode 200) we need to use the save value
     mode = modeSave+1;
-  } else {
+  } 
+  else {
     mode = 0; 
   }
-  
+
   modeSave = mode;  
   initMode();   
 }
@@ -120,15 +122,15 @@ void oscCallbackChangeMode(OSCMessage *_mes){
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
 
   //touchOSC send float! int does NOT work
-//  uint8_t arg=_mes->getArgInt32(0) & 0xff;
+  //  uint8_t arg=_mes->getArgInt32(0) & 0xff;
   float arg=_mes->getArgFloat(0);
   if (arg < 1.f) {
     //check also for int parameter here!
     if (_mes->getArgInt32(0) != 1) {
-        return;
+      return;
     }
   }
- 
+
   increaseMode(); 
 }
 
@@ -137,7 +139,7 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 void oscCallbackConfig(OSCMessage *_mes){
   if (oscCallBackWorkarround>0) return;
   oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-  
+
   int magicByte = _mes->getArgInt32(0);
   int dataPin = _mes->getArgInt32(1);
   int clkPin = _mes->getArgInt32(2);
@@ -145,7 +147,7 @@ void oscCallbackConfig(OSCMessage *_mes){
 #ifdef USE_SERIAL_DEBUG
   Serial.println(cnt, DEC);
 #endif  
-    
+
   //66 is just a magic nr.
   if (magicByte == EEPROM_MAGIC_BYTE && dataPin>0 && clkPin>0 && cnt>0 && dataPin!=clkPin) {
     EEPROM.write(EEPROM_HEADER_1, CONST_I);
@@ -157,7 +159,7 @@ void oscCallbackConfig(OSCMessage *_mes){
     EEPROMWriteInt(EEPROM_POS_COUNT, cnt);
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.println("RBT");
+    Serial.println("RBT");
 #endif  
 
     //just to be sure
@@ -165,12 +167,21 @@ void oscCallbackConfig(OSCMessage *_mes){
     synchronousBlink();
 
     resetFunc();  //call reset    
-  } else {
+  } 
+  else {
 
 #ifdef USE_SERIAL_DEBUG
-  Serial.println("Invalid");
+    Serial.println("Invalid");
 #endif      
-  }
-    
+  }    
 }
+
+
+void oscCallbackSavePreset(OSCMessage *_mes){
+  if (oscCallBackWorkarround>0) return;
+  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
+
+  saveCurrentStateToEeprom();
+}
+
 
