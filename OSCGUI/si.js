@@ -123,6 +123,20 @@ pages = [
     "label": "Menu",
     "labelSize": "18",
 },
+/* -- Save Preset */
+{
+     "name": "sav",
+     "type": "Button",
+     "x": 0, "y": .8,
+     "width": .22, "height": .1,
+     "mode": "contact",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "ontouchstart": "interfaceManager.refreshInterface()",
+     "label": "Preset",
+     "labelSize": "18",
+},
+
 ],
 
 ];
