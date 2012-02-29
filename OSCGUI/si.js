@@ -132,7 +132,6 @@ pages = [
      "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "ontouchstart": "interfaceManager.refreshInterface()",
      "label": "Preset",
      "labelSize": "18",
 },
