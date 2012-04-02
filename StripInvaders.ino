@@ -42,7 +42,7 @@
 // Defines
 
 //use serail debug or not
-#define USE_SERIAL_DEBUG 1
+//#define USE_SERIAL_DEBUG 1
 
 //use DHCP server OR static IP. Using DHCP and static ip as fallback is not possible, too less space left on arduino ethernet
 #define USE_DHCP 1
@@ -114,7 +114,7 @@ OSCServer oscServer;
 //*************************/
 // Misc
 
-#define MAX_NR_OF_MODES 15
+#define MAX_NR_OF_MODES 16
 #define MAX_SLEEP_TIME 160.0f
 
 const uint8_t ledPin = 9;
@@ -332,6 +332,9 @@ void loop(){
     case 14:
       loopXor(); //fader
       break;
+    case 15:
+      loopHsb(); //fader
+      break;
       //internal mode, fade from one color to another
     case 200:
       faderLoop();
@@ -383,9 +386,10 @@ void initMode() {
   case 11:
   case 12:
   case 13:
-  case 14:  
+  case 14:
     setupXor(mode-9);
-    break;          
+    break;
+//  case 15:    
   }  
 
 #ifdef USE_SERIAL_DEBUG
