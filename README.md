@@ -69,10 +69,11 @@ Features:
 
 ## TODO:
 
-* More effects (Plasma, Fire, Perlin Noise)
-* Improve Audiosync 
+* More effects (Plasma, Fire, Perlin Noise, FFT)
+* Improve Audiosync
+* Reduce OSC Library size
 * Gamma correction
-* save/load present (current mode, rgb values)
+* Test if OSC Workarround is still needed with Arduino v1.0.1
 
 
 ## Misc:
