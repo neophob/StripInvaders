@@ -69,10 +69,11 @@ Features:
 
 ## TODO:
 
-* More effects (Plasma, Fire, Perlin Noise)
-* Improve Audiosync 
+* More effects (Plasma, Fire, Perlin Noise, FFT)
+* Improve Audiosync
+* Reduce OSC Library size
 * Gamma correction
-* save/load present (current mode, rgb values)
+* Test if OSC Workarround is still needed with Arduino v1.0.1
 
 
 ## Misc:
@@ -88,4 +89,11 @@ StripInvaders provide some ready to use OSC GUI's:
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, path: OSCGUI/StripInvaders_iPhone.touchosc
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, path: OSCGUI/StripInvaders_iPad.touchosc
 
+## Development Hints
 
+The main issue is the small ROM on arduino (<32kb) when using all libraries.
+
+### EthernetBonjour
+* Also due to similar memory limitations, you can only vend up to 8 services running on your board. If you want to change this limitation, edit "NumMDNSServiceRecords" in EthernetBonjour.h (but note that the WIZnet chipset on the ethernet shield only supports 4 sockets anyway, one already taken up by the Bonjour library, so 8 services might be way too much anyway. Thus, you could also lower this constant to free up some memory).
+
+-> I use only one service: `#define  NumMDNSServiceRecords   (1)`
