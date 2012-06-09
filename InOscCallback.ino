@@ -3,9 +3,6 @@
 
 // DELAY
 void oscCallbackDelay(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   //delay between 0ms and 120ms
   DELAY = byte( _mes->getArgFloat(0)*MAX_SLEEP_TIME );
 
@@ -22,9 +19,6 @@ byte getFirstFloatArgument(OSCMessage *_mes) {
 
 // R
 void oscCallbackR(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   oscR = getFirstFloatArgument(_mes);
 
 #ifdef USE_SERIAL_DEBUG
@@ -36,9 +30,6 @@ void oscCallbackR(OSCMessage *_mes){
 
 // G
 void oscCallbackG(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   oscG = getFirstFloatArgument(_mes);
 
 #ifdef USE_SERIAL_DEBUG
@@ -50,9 +41,6 @@ void oscCallbackG(OSCMessage *_mes){
 
 // B
 void oscCallbackB(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   oscB = getFirstFloatArgument(_mes);
 
 #ifdef USE_SERIAL_DEBUG
@@ -87,9 +75,6 @@ void oscCallbackAudio(OSCMessage *_mes){
 
 // change mode, use mode nr X
 void oscCallbackChangeModeDirect(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   byte arg=byte(_mes->getArgFloat(0));  
   if (arg > MAX_NR_OF_MODES-1) {
     return;
@@ -118,9 +103,6 @@ void increaseMode() {
 
 // change mode, just increase current mode
 void oscCallbackChangeMode(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   //touchOSC send float! int does NOT work
   //  uint8_t arg=_mes->getArgInt32(0) & 0xff;
   float arg=_mes->getArgFloat(0);
@@ -137,9 +119,6 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 
 //Swap cabling of ws2801 strips and store config into eeprom
 void oscCallbackConfig(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   int magicByte = _mes->getArgInt32(0);
   int dataPin = _mes->getArgInt32(1);
   int clkPin = _mes->getArgInt32(2);
@@ -178,9 +157,6 @@ void oscCallbackConfig(OSCMessage *_mes){
 
 
 void oscCallbackSavePreset(OSCMessage *_mes){
-  if (oscCallBackWorkarround>0) return;
-  oscCallBackWorkarround = OSC_WORKARROUND_TIME;
-
   saveCurrentStateToEeprom();
 }
 

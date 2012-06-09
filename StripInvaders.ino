@@ -65,7 +65,6 @@ uint8_t faderSteps;
 // WS2801
 //how many pixels, I use 32 pixels/m
 #define NR_OF_PIXELS 160
-#define OSC_WORKARROUND_TIME 2
 
 //EEPROM offset
 #define EEPROM_HEADER_1 0
@@ -107,7 +106,6 @@ LPD8806 strip = LPD8806();
 byte myMac[] = { 0x00, 0x00, 0xAF, 0xFE, 0xBE, 0x01 };
 
 const int serverPort  = 10000;
-byte oscCallBackWorkarround;
 OSCServer oscServer;
 
 
@@ -151,7 +149,6 @@ void setup(){
   oscG = 255;
   oscB = 255;
   mode=0;
-  oscCallBackWorkarround = 0;
 
   int cnt = NR_OF_PIXELS;
   
@@ -258,8 +255,6 @@ void setup(){
   synchronousBlink();
   delay(50);
   synchronousBlink();
-  delay(50);
-  synchronousBlink();
 
   // Initialize the Bonjour/MDNS library. You can now reach or ping this
   // Arduino via the host name "Invader.local", provided that your operating
@@ -344,10 +339,6 @@ void loop(){
     frames++;
   } 
 
-  //reduce osc workaround time, to prevent duplicate messages  
-  if (oscCallBackWorkarround>0) {
-    oscCallBackWorkarround--;
-  }
 }
 
 /*****************************************************************************************
