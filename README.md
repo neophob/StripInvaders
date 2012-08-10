@@ -90,7 +90,7 @@ StripInvaders provide some ready to use OSC GUI's for different OS:
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, iOS, path: OSCGUI/StripInvaders_iPad.touchosc
 
 ### TouchOSC
-Get TouchOSC from the Apple App Store. You can use [TouchOSC Editor](http://hexler.net/software/touchosc) or iTunes to copy the iPad or iPhone interface from the `OSCGUI` subdirectory.
+Get TouchOSC from the Apple App Store. You can use [TouchOSC Editor](http://hexler.net/software/touchosc) or iTunes to copy the iPad or iPhone interface from the `OSCGUI` subdirectory. See http://hexler.net/docs/touchosc-editor for more information.
 
 ### Control
 Get it from the Google [Play Store](https://play.google.com/store/apps/details?id=com.charlieroberts.Control). After starting the application press on the + button on top to add the StripInvaders interface. Enter the URL (`https://raw.github.com/neophob/StripInvaders/master/OSCGUI/si.js`), select the StripInvaders from the Destination tab and you're ready to go.
