@@ -81,13 +81,19 @@ Features:
 * check http://neophob.com/2012/01/stripinvaders-howto-assemble/ for more information how to assemble the LED Strip
 
 ## OSC GUI
-StripInvaders provide some ready to use OSC GUI's:
+StripInvaders provide some ready to use OSC GUI's for different OS:
 
 * [OSX/WIN](https://github.com/neophob/StripInvaders/downloads) Application to configure the PixelController
 * [PureData](http://puredata.info/) OSC Gui, path: OSCGUI/simple.pd (needed to configure the PixelController)
 * [Control](http://charlie-roberts.com/Control/) OSC Gui, Android/iOS, path: OSCGUI/si.js
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, iOS, path: OSCGUI/StripInvaders_iPhone.touchosc
 * [TouchOSC](http://hexler.net/software/touchosc) OSC Gui, iOS, path: OSCGUI/StripInvaders_iPad.touchosc
+
+### TouchOSC
+Get TouchOSC from the Apple App Store. You can use [TouchOSC Editor](http://hexler.net/software/touchosc) or iTunes to copy the iPad or iPhone interface from the `OSCGUI` subdirectory.
+
+### Control
+Get it from the Google [Play Store](https://play.google.com/store/apps/details?id=com.charlieroberts.Control). After starting the application press on the + button on top to add the StripInvaders interface. Enter the URL (`https://raw.github.com/neophob/StripInvaders/master/OSCGUI/si.js`), select the StripInvaders from the Destination tab and you're ready to go.
 
 ## Development Hints
 
