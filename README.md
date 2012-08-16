@@ -70,7 +70,7 @@ Features:
 ## TODO:
 
 * More effects (Plasma, Fire, Perlin Noise, FFT)
-* Improve Audiosync
+* Improve Audiosync Maybe using a MSGEQ7 (http://nuewire.com/info-archive/msgeq7-by-j-skoba/)
 * Reduce OSC Library size
 * Gamma correction
 * Test if OSC Workarround is still needed with Arduino v1.0.1
