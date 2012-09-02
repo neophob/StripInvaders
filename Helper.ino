@@ -104,7 +104,7 @@ void faderLoop() {
   uint8_t bb=oldB+stepsB*faderSteps;
   uint32_t c = Color(rr, gg, bb);
 
-  for (int i=0; i < strip.numPixels(); i++) {
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
     setTintPixelColor(i, c);
   }
 
@@ -121,7 +121,7 @@ void synchronousBlink() {
 }
 
 //This function will write a 2 byte integer to the eeprom at the specified address and address + 1
-void EEPROMWriteInt(int p_address, int p_value) {
+void EEPROMWriteInt(uint16_t p_address, uint16_t p_value) {
   byte lowByte = ((p_value >> 0) & 0xFF);
   byte highByte = ((p_value >> 8) & 0xFF);
 
@@ -130,7 +130,7 @@ void EEPROMWriteInt(int p_address, int p_value) {
 }
 
 //This function will read a 2 byte integer from the eeprom at the specified address and address + 1
-unsigned int EEPROMReadInt(int p_address) {
+uint16_t EEPROMReadInt(uint16_t p_address) {
   byte lowByte = EEPROM.read(p_address);
   byte highByte = EEPROM.read(p_address + 1);
 
@@ -149,14 +149,24 @@ void saveCurrentStateToEeprom() {
   EEPROM.write(EEPROM_POS_B, oscB);
 }
 
-//load savet preset from eeprom (if available)
-void restorePresetStateFromEeprom() {
+
+boolean checkEepromSignature() {
   //check if data/clk port is stored in the eeprom. First check for header INV 
   byte header1 = EEPROM.read(EEPROM_HEADER_10);
   byte header2 = EEPROM.read(EEPROM_HEADER_11);
   byte header3 = EEPROM.read(EEPROM_HEADER_12);
-
+  
   if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
+   return true;   
+  }
+  
+  return false;
+}
+
+
+//load savet preset from eeprom (if available)
+void restorePresetStateFromEeprom() {
+  if (checkEepromSignature()) {
     mode = EEPROM.read(EEPROM_POS_MODE);
     if (mode>=MAX_NR_OF_MODES) {
       mode=0;

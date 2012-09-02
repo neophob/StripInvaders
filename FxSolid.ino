@@ -27,8 +27,9 @@ void loopSolid() {
 
 }
 
+
 void fillAllPixelWith(uint32_t col) {
-  for (int i=0; i < strip.numPixels(); i++) {
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
      setTintPixelColor(i, col);
   }
 }

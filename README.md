@@ -73,7 +73,7 @@ Features:
 * Improve Audiosync Maybe using a MSGEQ7 (http://nuewire.com/info-archive/msgeq7-by-j-skoba/)
 * Reduce OSC Library size
 * Gamma correction
-* Test if OSC Workarround is still needed with Arduino v1.0.1
+* Use ColorSets
 
 
 ## Misc:

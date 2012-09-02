@@ -7,7 +7,7 @@ void setupRainbow() {
 }
 
 void loopRainbow() {
-  for (int i=0; i < strip.numPixels(); i++) {
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
       // tricky math! we use each pixel as a fraction of the full 96-color wheel
       // (thats the i / strip.numPixels() part)
       // Then add in j which makes the colors go around per pixel

@@ -88,13 +88,11 @@ void oscCallbackChangeModeDirect(OSCMessage *_mes){
 
 // next mode
 void increaseMode() {
+  mode = 0; 
   if (modeSave<MAX_NR_OF_MODES-1) {
     //incase we are fading (mode 200) we need to use the save value
     mode = modeSave+1;
   } 
-  else {
-    mode = 0; 
-  }
 
   modeSave = mode;  
   initMode();   
@@ -119,9 +117,9 @@ void oscCallbackChangeMode(OSCMessage *_mes){
 
 //Swap cabling of ws2801 strips and store config into eeprom
 void oscCallbackConfig(OSCMessage *_mes){
-  int magicByte = _mes->getArgInt32(0);
-  int dataPin = _mes->getArgInt32(1);
-  int clkPin = _mes->getArgInt32(2);
+  byte magicByte = _mes->getArgInt32(0);
+  byte dataPin = _mes->getArgInt32(1);
+  byte clkPin = _mes->getArgInt32(2);
   int cnt = _mes->getArgInt32(3);
 #ifdef USE_SERIAL_DEBUG
   Serial.println(cnt, DEC);
@@ -158,6 +156,38 @@ void oscCallbackConfig(OSCMessage *_mes){
 
 void oscCallbackSavePreset(OSCMessage *_mes){
   saveCurrentStateToEeprom();
+}
+
+
+void oscCallbackPixel(OSCMessage *_mes){
+  int16_t argCount = _mes->getArgsNum();
+  if (argCount<5) {
+#ifdef USE_SERIAL_DEBUG
+    Serial.print("Invalid Parametercount: ");
+    Serial.println(argCount, DEC);
+#endif     
+    return;
+  }
+  
+  //change mode to serverimage - else buffer would be overwritten!
+  //oscMode = MODE_SERVER_IMAGE;
+  
+  int16_t ofs = _mes->getArgInt32(0);
+#ifdef USE_SERIAL_DEBUG
+    Serial.print("OSC Update Pixel, offset: ");
+    Serial.println(ofs, DEC);
+#endif     
+  
+  //get 4 colors from osc message
+  for (byte b=0; b<4; b++) {
+    int32_t col=_mes->getArgInt32(b+1);
+    strip.setPixelColor(ofs+b, col);
+#ifdef USE_SERIAL_DEBUG
+    Serial.print("Set: ");
+    Serial.println(col, HEX);
+#endif     
+  }
+  
 }
 
 

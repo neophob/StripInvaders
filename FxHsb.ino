@@ -25,8 +25,9 @@ uint32_t hsb2rgbAN2(uint16_t index, uint8_t sat, uint8_t bright) {
 }
 
 void loopHsb() {
-  for (int i=0; i < strip.numPixels(); i++) {
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
 //    setTintPixelColor(i, hsb2rgbAN2(frames, i+frames, i+frames) );
     setTintPixelColor(i, hsb2rgbAN2(frames, i, 255) );
   }    
 }
+

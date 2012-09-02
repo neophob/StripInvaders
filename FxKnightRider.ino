@@ -49,10 +49,10 @@ void loopKnightRider() {
 
 //draw nrOf knight rider lines and check for updates
 void drawKnightRider() {
-  int ofs=0;
+  uint16_t ofs=0;
   
-  for (int n=0; n<howMany; n++) {
-    for (int i=kr; i<kr+krSize && i<strip.numPixels(); i++) {
+  for (uint16_t n=0; n<howMany; n++) {
+    for (uint16_t i=kr; i<kr+krSize && i<strip.numPixels(); i++) {
       setTintPixelColor(i+ofs, WHITE_COLOR);
     }
     ofs+=strip.numPixels()/howMany;
@@ -62,7 +62,7 @@ void drawKnightRider() {
 }
 
 //should the direction swapped?
-void checkSwapDirection(int lengthOfStrip) {
+void checkSwapDirection(uint16_t lengthOfStrip) {
   if (krDirection==0) {
     kr++;
   } else {

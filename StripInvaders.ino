@@ -24,6 +24,7 @@
 #define OSC_MSG_AUDIO "/audio"
 #define OSC_MSG_CONFIG "/cfg"
 #define OSC_MSG_SAVE "/sav"
+#define OSC_MSG_UPDATE_PIXEL "/pxl" 
 
 //*************************/
 // define strip hardware, use only ONE hardware type
@@ -85,8 +86,8 @@ uint8_t faderSteps;
 #define EEPROM_POS_B 17
 
 //output pixels dni:3/2
-int dataPin = 3; 
-int clockPin = 2;  
+uint8_t dataPin = 3; 
+uint8_t clockPin = 2;  
 
 //dummy init the pixel lib
 #ifdef USE_WS2801
@@ -105,7 +106,7 @@ LPD8806 strip = LPD8806();
 
 byte myMac[] = { 0x00, 0x00, 0xAF, 0xFE, 0xBE, 0x01 };
 
-const int serverPort  = 10000;
+const uint16_t serverPort  = 10000;
 OSCServer oscServer;
 
 
@@ -165,11 +166,7 @@ void setup(){
 #endif
 
   //check if data/clk port is stored in the eeprom. First check for header INV 
-  byte header1 = EEPROM.read(EEPROM_HEADER_1);
-  byte header2 = EEPROM.read(EEPROM_HEADER_2);
-  byte header3 = EEPROM.read(EEPROM_HEADER_3);
-
-  if (header1 == CONST_I && header2 == CONST_N && header3 == CONST_V) {
+  if (checkEepromSignature()) {
     //read data and clk pin from the eeprom
     dataPin = EEPROM.read(EEPROM_POS_DATA);
     clockPin = EEPROM.read(EEPROM_POS_CLK);
@@ -198,7 +195,7 @@ void setup(){
 #endif  
 
   
-  //ws2801 start strips 
+  //start strips 
   strip.begin();
 
 
@@ -239,7 +236,7 @@ void setup(){
   oscServer.addCallback(OSC_MSG_CHANGE_MODE_DIRECT, &oscCallbackChangeModeDirect); //PARAMETER: None, just a trigger
   oscServer.addCallback(OSC_MSG_CONFIG, &oscCallbackConfig);
   oscServer.addCallback(OSC_MSG_SAVE, &oscCallbackSavePreset);  
-  
+  oscServer.addCallback(OSC_MSG_UPDATE_PIXEL, &oscCallbackPixel); //PARAMETER: 2, int offset, 4xlong
 
 #ifdef USE_AUDIO_INPUT
   Serial.println("AU");
@@ -252,8 +249,6 @@ void setup(){
   pinMode(ledPin, OUTPUT);  
 
   //we-are-ready indicator
-  synchronousBlink();
-  delay(50);
   synchronousBlink();
 
   // Initialize the Bonjour/MDNS library. You can now reach or ping this
@@ -269,7 +264,7 @@ void setup(){
   // browser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled
   // Bonjour in the "Bookmarks" preferences in Safari).
-  int ret = EthernetBonjour.addServiceRecord("Invader._osc", serverPort, MDNSServiceUDP);  
+  uint16_t ret = EthernetBonjour.addServiceRecord("Invader._osc", serverPort, MDNSServiceUDP);  
   if (ret==0) {
     //error, bonjour service failed
   }

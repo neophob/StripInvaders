@@ -8,8 +8,8 @@ void setupXor(uint8_t _xormode) {
 
 void loopXor() {
   
-  int ofs;
-  for (int i=0; i < strip.numPixels(); i++) {    
+  uint16_t ofs;
+  for (uint16_t i=0; i < strip.numPixels(); i++) {    
     ofs = i+frames;
     
     switch (xormode) {
