@@ -212,7 +212,7 @@ void setup(){
   }
 #else
   //Manual IP
-  Ethernet.begin(myMac, myIp)
+  Ethernet.begin(myMac, myIp);
 #endif
 
 #ifdef USE_SERIAL_DEBUG 
