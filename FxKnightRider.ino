@@ -29,7 +29,7 @@ void loopKnightRider() {
   if (krMode==0) {
     //single pixel mode
     uint32_t clearCol = complementaryColor();  
-    for (byte i=0; i < strip.numPixels(); i++) {
+    for (uint16_t i=0; i < strip.numPixels(); i++) {
       setTintPixelColor(i, clearCol);
     }  
     drawKnightRider();    
@@ -37,7 +37,7 @@ void loopKnightRider() {
     //block mode
     uint16_t ofs = kr*pixelsPerBlock;
     uint32_t cc = Wheel((frames+kr)%255);
-    for (byte i=0; i<pixelsPerBlock; i++) {
+    for (uint16_t i=0; i<pixelsPerBlock; i++) {
       setTintPixelColor(ofs++, cc);
     }
 
